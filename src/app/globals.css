@@ -61,3 +61,25 @@ body {
   outline: 2px solid var(--accent-hi);
   outline-offset: 2px;
 }
+
+/* Global focus-visible fallback for interactive elements without local classes */
+:where(a, button, input, textarea, select, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Reduced-motion: kill non-essential CSS transitions (JS pins handled in lib/motion.ts) */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
