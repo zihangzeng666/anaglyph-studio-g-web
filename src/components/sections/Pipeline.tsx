@@ -1,9 +1,11 @@
 import { chapters } from "../../../content/chapters";
+import { ChapterRail } from "@/components/ChapterRail";
 import { SectionShell } from "./SectionShell";
 
 /**
  * Pipeline — Setup → Tags → Camera K → Solve/CMM → Scene → Track.
- * Static chapter cards with anchor ids; GSAP pins land in a later PR.
+ * Scroll pins owned by lib/motion.ts (via ChapterRail island); reduced-motion
+ * shows the full static stack. Hold scrub is never driven from scroll.
  */
 export function Pipeline() {
   return (
@@ -13,33 +15,22 @@ export function Pipeline() {
       title="Explore the pipeline"
     >
       <p className="mb-8 max-w-2xl text-base leading-relaxed text-muted">
-        Six chapters from case setup to live outline lock. Jump any step — full
-        scroll motion ships later; the story is readable as static HTML.
+        Six chapters from case setup to live outline lock. Jump any step via the
+        rail. Desktop may pin chapters for scroll storytelling; reduced-motion
+        users get the full static stack with instant anchors.
       </p>
 
-      {/* Chapter jump rail — always in DOM for no-JS / reduced-motion */}
-      <nav
-        aria-label="Pipeline chapters"
-        className="mb-12 flex flex-wrap gap-2 border-b border-[var(--border)] pb-6"
-      >
-        {chapters.map((chapter) => (
-          <a
-            key={chapter.id}
-            href={`#${chapter.id}`}
-            className="rounded-sm border border-[var(--border)] bg-panel/40 px-3 py-1.5 font-mono text-xs text-muted transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            <span className="text-accent/80">{chapter.index}</span>{" "}
-            {chapter.title}
-          </a>
-        ))}
-      </nav>
+      {/* Client island: GSAP loads dynamically inside lib/motion.ts */}
+      <ChapterRail chapters={chapters} />
 
-      <div className="space-y-8">
+      <div className="space-y-8" data-pipeline-chapters>
         {chapters.map((chapter) => (
           <article
             key={chapter.id}
             id={chapter.id}
-            className="scroll-mt-24 grid gap-6 rounded-sm border border-[var(--border)] bg-panel/40 p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:p-8"
+            data-chapter-id={chapter.id}
+            data-media-mode={chapter.motion.mediaMode}
+            className="scroll-mt-28 grid gap-6 rounded-sm border border-[var(--border)] bg-panel/40 p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:p-8"
             aria-labelledby={`${chapter.id}-title`}
           >
             <div>
