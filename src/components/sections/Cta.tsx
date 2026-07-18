@@ -15,7 +15,8 @@ export function Cta() {
     <SectionShell id="cta" eyebrow="Get Studio G" title="Download. Build. Demo.">
       <p className="mb-10 max-w-2xl text-base leading-relaxed text-muted">
         Ready-to-run Windows console or full source with OpenCV build pointers.
-        Hosted package URLs land in a follow-on release PR.
+        Packages are hosted externally (checksum + size on each download page).
+        SmartScreen may warn on unsigned builds.
       </p>
 
       <div className="grid gap-4 md:grid-cols-3">

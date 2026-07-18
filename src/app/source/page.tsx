@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { downloadsById } from "../../../content/downloads";
+import {
+  downloadsById,
+  isDownloadLive,
+  isPlaceholderHost,
+} from "../../../content/downloads";
 import { site } from "../../../content/site";
 import { UtilityPage } from "@/components/UtilityPage";
 
@@ -10,7 +14,9 @@ export const metadata: Metadata = {
 
 export default function SourcePage() {
   const source = downloadsById.get("source");
-  const hasHref = Boolean(source?.href);
+  const href = source?.href ?? "";
+  const live = isDownloadLive(href);
+  const placeholder = isPlaceholderHost(href);
 
   return (
     <UtilityPage title="Get source" eyebrow="Source">
@@ -41,11 +47,12 @@ export default function SourcePage() {
         </div>
       </dl>
 
-      {hasHref ? (
+      {live ? (
         <p>
           <a
-            href={source!.href}
+            href={href}
             className="inline-flex rounded-sm border border-[var(--border)] bg-panel px-5 py-3 text-sm font-semibold text-ink hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            rel={placeholder ? "nofollow" : undefined}
           >
             Download {source!.filename}
           </a>
@@ -57,6 +64,17 @@ export default function SourcePage() {
           source tree for MSVC / OpenCV steps once you have the zip.
         </p>
       )}
+
+      {placeholder && live ? (
+        <p className="rounded-sm border border-[var(--border)] bg-frame/30 px-4 py-3 text-sm text-muted">
+          Host URL is still an{" "}
+          <span className="font-mono text-ink">example.com</span> placeholder.
+          Set{" "}
+          <span className="font-mono text-ink">NEXT_PUBLIC_DL_SOURCE_URL</span>{" "}
+          to the real release host before public launch. No zip is stored in
+          this git repo.
+        </p>
+      ) : null}
 
       <section aria-labelledby="prereq-heading">
         <h2
@@ -71,6 +89,35 @@ export default function SourcePage() {
           <li>Optional: IC4 runtime / Spinnaker SDK (CMake flags)</li>
           <li>CMake 3.x+</li>
         </ul>
+      </section>
+
+      <section aria-labelledby="sysreq-source-heading">
+        <h2
+          id="sysreq-source-heading"
+          className="font-display text-xl font-semibold text-ink"
+        >
+          Runtime system requirements
+        </h2>
+        <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
+          <li>Windows 10/11 x64</li>
+          <li>Direct3D 11 capable GPU</li>
+          <li>Camera: webcam, video file, or IC4</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="smartscreen-source-heading">
+        <h2
+          id="smartscreen-source-heading"
+          className="font-display text-xl font-semibold text-ink"
+        >
+          SmartScreen note
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed">
+          Built binaries from source may trigger Windows SmartScreen when
+          unsigned. Prefer verifying the published SHA-256 for official
+          packages. Code-signing is a product release decision, not a marketing
+          site concern.
+        </p>
       </section>
     </UtilityPage>
   );

@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
-import { downloadsById } from "../../../content/downloads";
+import {
+  downloadsById,
+  isDownloadLive,
+  isPlaceholderHost,
+} from "../../../content/downloads";
 import { site } from "../../../content/site";
 import { UtilityPage } from "@/components/UtilityPage";
 
@@ -10,7 +14,9 @@ export const metadata: Metadata = {
 
 export default function DownloadPage() {
   const runtime = downloadsById.get("runtime");
-  const hasHref = Boolean(runtime?.href);
+  const href = runtime?.href ?? "";
+  const live = isDownloadLive(href);
+  const placeholder = isPlaceholderHost(href);
 
   return (
     <UtilityPage title="Download Studio_G" eyebrow="Download">
@@ -40,25 +46,36 @@ export default function DownloadPage() {
         </div>
       </dl>
 
-      {hasHref ? (
+      {live ? (
         <p>
           <a
-            href={runtime!.href}
+            href={href}
             className="inline-flex rounded-sm bg-accent px-5 py-3 text-sm font-semibold text-[var(--ink-on-accent)] hover:bg-accent-hi focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-hi"
+            rel={placeholder ? "nofollow" : undefined}
           >
             Download {runtime!.filename}
           </a>
         </p>
       ) : (
         <p className="rounded-sm border border-[var(--border)] bg-frame/40 px-4 py-3 text-sm">
-          External download URL is not wired yet. Hosting and checksum
-          verification land in a follow-on release PR. Use{" "}
+          External download URL is not wired yet. Use{" "}
           <a href="/demo" className="text-accent underline-offset-2 hover:underline">
             Request demo
           </a>{" "}
           for interim access.
         </p>
       )}
+
+      {placeholder && live ? (
+        <p className="rounded-sm border border-[var(--border)] bg-frame/30 px-4 py-3 text-sm text-muted">
+          Host URL is still an{" "}
+          <span className="font-mono text-ink">example.com</span> placeholder.
+          Replace with{" "}
+          <span className="font-mono text-ink">NEXT_PUBLIC_DL_RUNTIME_URL</span>{" "}
+          (immutable HTTPS release) before public launch. No zip is stored in
+          this git repo.
+        </p>
+      ) : null}
 
       <section aria-labelledby="sysreq-heading">
         <h2
@@ -71,7 +88,29 @@ export default function DownloadPage() {
           <li>Windows 10/11 x64</li>
           <li>Direct3D 11 capable GPU</li>
           <li>Camera: webcam, video file, or IC4 (share runtime)</li>
+          <li>Optional: Spinnaker SDK builds require CMake WITH_SPINNAKER</li>
         </ul>
+      </section>
+
+      <section aria-labelledby="smartscreen-heading">
+        <h2
+          id="smartscreen-heading"
+          className="font-display text-xl font-semibold text-ink"
+        >
+          SmartScreen note
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed">
+          Windows 10/11 x64 · ready-to-run zip ·{" "}
+          <strong className="font-medium text-ink">
+            SmartScreen may warn on unsigned builds
+          </strong>
+          . Prefer the published SHA-256 over “looks fine” heuristics. Source
+          builds and code-signing policy are covered on the{" "}
+          <a href="/source" className="text-accent underline-offset-2 hover:underline">
+            source
+          </a>{" "}
+          page.
+        </p>
       </section>
     </UtilityPage>
   );
