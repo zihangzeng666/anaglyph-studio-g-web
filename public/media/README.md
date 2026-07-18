@@ -81,13 +81,17 @@ Until assets land and mid-laptop QA passes (≥55 fps scrub, long tasks &lt;50 m
 
 ## Pipeline stills
 
-Place claim-safe crops at paths referenced in `content/chapters.ts`:
+Soft launch ships SVG placeholders (regenerate with `node scripts/generate-media-placeholders.mjs`).
+Replace with claim-safe captures at the same paths (or update `content/chapters.ts`):
 
-- `/media/pipeline/setup.png`
-- `/media/pipeline/tags.png`
-- `/media/pipeline/camera-k.png`
-- `/media/pipeline/solve-cmm.png`
-- `/media/pipeline/scene.png`
-- `/media/pipeline/track.png`
+- `/media/pipeline/setup.svg` (or `.webp` / `.png`)
+- `/media/pipeline/tags.svg`
+- `/media/pipeline/camera-k.svg`
+- `/media/pipeline/solve-cmm.svg`
+- `/media/pipeline/scene.svg`
+- `/media/pipeline/track.svg`
+- `/media/hold/track-poster.svg` (hold still until scrub loops land)
 
-Prefer WebP/AVIF for production; PNG placeholders OK during soft launch.
+Prefer WebP/AVIF for production captures. Use `assetPath()` for all `/media/*` URLs so GitHub Pages `basePath` works.
+
+When scrub loops are ready: add `track-scrub.webm` + `track-scrub.mp4`, set `HOLD_HAS_SCRUB_LOOP = true` in `src/lib/holdFlags.ts`.

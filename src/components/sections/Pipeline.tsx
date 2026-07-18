@@ -1,5 +1,6 @@
 import { chapters } from "../../../content/chapters";
 import { ChapterRail } from "@/components/ChapterRail";
+import { assetPath } from "@/lib/assetPath";
 import { SectionShell } from "./SectionShell";
 
 /**
@@ -58,17 +59,18 @@ export function Pipeline() {
               </ul>
             </div>
 
-            <figure className="flex min-h-[12rem] flex-col justify-between rounded-sm border border-[var(--border)] bg-bg/70 p-4">
-              <div
-                className="flex flex-1 items-center justify-center border border-dashed border-[var(--border)] bg-frame/30"
-                role="img"
-                aria-label={chapter.media.alt}
-              >
-                <span className="px-4 text-center font-mono text-[11px] tracking-wide text-muted">
-                  Media placeholder
-                  <br />
-                  <span className="text-ink/50">{chapter.media.src}</span>
-                </span>
+            <figure className="flex min-h-[12rem] flex-col rounded-sm border border-[var(--border)] bg-bg/70 p-3">
+              <div className="relative aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-frame/40">
+                {/* eslint-disable-next-line @next/next/no-img-element -- static export + SVG placeholders */}
+                <img
+                  src={assetPath(chapter.media.src)}
+                  alt={chapter.media.alt}
+                  className="h-full w-full object-cover object-top"
+                  loading="lazy"
+                  decoding="async"
+                  width={1280}
+                  height={720}
+                />
               </div>
               <figcaption className="mt-3 font-mono text-[11px] text-muted">
                 {chapter.media.alt}

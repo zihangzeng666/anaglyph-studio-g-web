@@ -34,8 +34,15 @@ export function getHoldMode(): HoldMode {
   return "play-only";
 }
 
+/**
+ * Soft launch: SVG poster ships in-repo. Scrub mp4/webm are optional —
+ * omit or 404 → HoldExplore shows the poster still (no broken video UI).
+ */
 export const HOLD_MEDIA = {
-  poster: "/media/hold/track-poster.jpg",
+  poster: "/media/hold/track-poster.svg",
   webm: "/media/hold/track-scrub.webm",
   mp4: "/media/hold/track-scrub.mp4",
 } as const;
+
+/** True when scrub loop files are expected (not soft-launch still-only). */
+export const HOLD_HAS_SCRUB_LOOP = false;

@@ -2,7 +2,8 @@ import type { Chapter } from "./types";
 
 /**
  * Pipeline scroll chapters: Setup → Tags → Camera K → Solve/CMM → Scene → Track.
- * Media paths are placeholders until the media PR ships captures.
+ * Soft launch ships industrial SVG placeholders under public/media/pipeline.
+ * Replace with capture stills (same basenames or update src) when ready.
  * v1 motion: crossfade stills (hold-scrub is section "hold", not scroll).
  */
 export const chapters: Chapter[] = [
@@ -18,7 +19,7 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/setup.png",
+      src: "/media/pipeline/setup.svg",
       alt: "Studio G Setup page with case, tags, and outline fields",
     },
     motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },
@@ -35,7 +36,7 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/tags.png",
+      src: "/media/pipeline/tags.svg",
       alt: "Printable AprilTag sheet and ChArUco board crop",
     },
     motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },
@@ -53,7 +54,7 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/camera-k.png",
+      src: "/media/pipeline/camera-k.svg",
       alt: "Studio G Calibrate page — Measure K, not FOV as hero",
     },
     motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },
@@ -71,7 +72,7 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/solve-cmm.png",
+      src: "/media/pipeline/solve-cmm.svg",
       alt: "Dual panel: PnP capture annotate versus Build from CMM",
     },
     motion: { scrollVh: 160, pin: true, mediaMode: "crossfade" },
@@ -88,7 +89,7 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/scene.png",
+      src: "/media/pipeline/scene.svg",
       alt: "Studio G Scene page with 3D preview",
     },
     motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },
@@ -106,7 +107,7 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/track.png",
+      src: "/media/pipeline/track.svg",
       alt: "Live tracking with outline overlay and error readout",
     },
     motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },

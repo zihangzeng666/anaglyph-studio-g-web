@@ -90,6 +90,15 @@ describe("workflows", () => {
   });
 });
 
+describe("pipeline media paths", () => {
+  it("points at public/media pipeline assets with extension", async () => {
+    const { chapters } = await import("../chapters");
+    for (const ch of chapters) {
+      expect(ch.media.src).toMatch(/^\/media\/pipeline\/.+\.(svg|png|webp|jpg|jpeg)$/);
+    }
+  });
+});
+
 describe("downloads placeholders", () => {
   it("exposes runtime and source with measured sizeHints", () => {
     const runtime = downloads.find((d) => d.id === "runtime");
