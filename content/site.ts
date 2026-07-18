@@ -10,8 +10,8 @@ import type { SectionSlot, SiteConfig, WorkflowEntry } from "./types";
 export const sections: SectionSlot[] = [
   { id: "hero", component: "Hero" },
   { id: "problem", component: "Problem" },
-  { id: "pipeline", component: "Pipeline" },
   { id: "paths", component: "Paths" },
+  { id: "pipeline", component: "Pipeline" },
   { id: "hold", component: "Hold" },
   { id: "specs", component: "Specs" },
   { id: "printables", component: "Printables" },

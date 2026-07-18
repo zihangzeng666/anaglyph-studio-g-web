@@ -42,8 +42,8 @@ export const metadata: Metadata = {
 };
 
 const NAV = [
-  { href: "/#pipeline", label: "Pipeline" },
   { href: "/#paths", label: "Paths" },
+  { href: "/#pipeline", label: "Pipeline" },
   ...(isRuntimeDownloadPublic()
     ? ([{ href: "/download", label: "Download" }] as const)
     : []),

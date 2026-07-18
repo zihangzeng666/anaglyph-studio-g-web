@@ -60,8 +60,8 @@ describe("site sections registry", () => {
   const expected: SectionId[] = [
     "hero",
     "problem",
-    "pipeline",
     "paths",
+    "pipeline",
     "hold",
     "specs",
     "printables",
