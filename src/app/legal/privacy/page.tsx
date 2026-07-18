@@ -14,17 +14,42 @@ export default function PrivacyPage() {
         This marketing site for {site.productName} is a static product surface.
         It does not require an account to browse.
       </p>
+
+      <h2 className="font-display text-xl font-semibold text-ink">
+        Analytics
+      </h2>
       <p>
-        If analytics are enabled in a later release, they will be configured for
-        privacy-friendly measurement (e.g. Plausible or a reviewed GA4 setup)
-        without a cookie wall where possible. Download packages are hosted
-        externally; their privacy practices are governed by the host.
+        Privacy-friendly measurement may be enabled (e.g. Plausible) without a
+        cookie wall where possible. Event names such as{" "}
+        <span className="font-mono text-ink">cta_click</span>,{" "}
+        <span className="font-mono text-ink">chapter_view</span>,{" "}
+        <span className="font-mono text-ink">scroll_depth</span>, and{" "}
+        <span className="font-mono text-ink">demo_submit</span> are aggregated
+        product metrics — not advertising profiles. When no analytics domain is
+        configured, the site emits no third-party trackers (development may log
+        events to the browser console only).
       </p>
+
+      <h2 className="font-display text-xl font-semibold text-ink">
+        Demo requests
+      </h2>
       <p>
-        Demo requests (when the form ships) collect only the information you
-        submit, used to respond to your inquiry. Placeholder contact addresses
-        on this site must be replaced before public launch.
+        The demo form collects only the information you submit (name, email,
+        optional company, message) to respond to your inquiry. Mailto mode opens
+        your local mail client; Formspree mode posts to Formspree under their
+        terms when that integration is configured. Placeholder contact addresses
+        must be replaced before public launch.
       </p>
+
+      <h2 className="font-display text-xl font-semibold text-ink">
+        Downloads
+      </h2>
+      <p>
+        Runtime and source packages are hosted externally; their privacy
+        practices are governed by the host. Checksums shown on this site help
+        you verify package integrity after download.
+      </p>
+
       <p className="font-mono text-xs text-muted">
         Draft notice — legal review required before production.
       </p>
