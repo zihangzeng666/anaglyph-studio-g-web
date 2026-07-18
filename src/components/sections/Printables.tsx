@@ -3,7 +3,7 @@ import { SectionShell } from "./SectionShell";
 
 /**
  * Printables — AprilTag sheets + ChArUco board (claim-safe).
- * PR7 expands copy; base content from claims registry.
+ * Actual-size print so physical markers match the case definition.
  */
 export function Printables() {
   const print = getClaim("print-tags-actual-size");
@@ -17,13 +17,23 @@ export function Printables() {
         print?.statement ??
         "Print-ready AprilTag sticker sheets at actual size.",
       meta: dict?.statement ?? "Dictionary support (e.g. 36h11 in demos).",
+      steps: [
+        "Export sheet from Studio G / tags tools",
+        "Print 100% scale (no fit-to-page)",
+        "Apply tags to mould per case definition (id + size_mm)",
+      ],
     },
     {
       title: "ChArUco calibration board",
       body:
         measure?.statement ??
         "Measure K — ChArUco board calibration for real camera intrinsics.",
-      meta: "Print at actual size so physical markers match the case definition.",
+      meta: "Print at actual size so physical markers match the board geometry used by Measure K.",
+      steps: [
+        "Print board at actual size",
+        "Open Calibrate → Measure K",
+        "Capture views until K converges — then Load K on Track",
+      ],
     },
   ];
 
@@ -35,14 +45,16 @@ export function Printables() {
     >
       <p className="mb-8 max-w-2xl text-base leading-relaxed text-muted">
         Stickers and boards leave the Studio ready for the shop floor — actual
-        size, not scaled screenshots.
+        size, not scaled screenshots. Physical tag size must match the case{" "}
+        <span className="font-mono text-ink">size_mm</span> fields so PnP and
+        live lock stay consistent.
       </p>
 
       <div className="grid gap-4 md:grid-cols-2">
         {cards.map((card) => (
           <article
             key={card.title}
-            className="rounded-sm border border-[var(--border)] bg-panel/50 p-6"
+            className="flex flex-col rounded-sm border border-[var(--border)] bg-panel/50 p-6"
           >
             <div
               className="mb-5 flex h-28 items-center justify-center rounded-sm border border-dashed border-accent/25 bg-bg/60"
@@ -66,6 +78,16 @@ export function Printables() {
             <p className="mt-3 font-mono text-[11px] leading-relaxed text-ink/70">
               {card.meta}
             </p>
+            <ol className="mt-5 space-y-1.5 border-t border-[var(--border)] pt-4 font-mono text-[11px] text-muted">
+              {card.steps.map((step, i) => (
+                <li key={step} className="flex gap-2">
+                  <span className="text-accent/80">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
           </article>
         ))}
       </div>
