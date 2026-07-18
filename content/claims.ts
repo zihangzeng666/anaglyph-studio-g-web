@@ -35,9 +35,11 @@ export const claims: Claim[] = [
   {
     id: "integrated-studio",
     statement:
-      "One integrated Studio instead of a chain of CLI tools.",
+      "Studio G guides the same calibration, solve, and live-tracking pipeline in one window — the steps that used to ship as modular CLIs and numbered scripts.",
     evidence:
-      "Studio G horizontal workflow strip vs scripts/0_Load… through 6_Archive…; product README pipeline",
+      "Studio G Home cards + horizontal step strip; lineage from scripts/0_Load… through 6_Archive… and CLI tools (same product stack, not third-party)",
+    notes:
+      "Copy must not sound like competitor replacement or disparaging the author’s own CLI form — both are this product’s lineage.",
     risk: "safe",
   },
   {

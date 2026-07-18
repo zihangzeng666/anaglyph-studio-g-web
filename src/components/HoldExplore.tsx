@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ENABLE_HOLD_EXPLORE,
   getHoldMode,
-  HOLD_HAS_SCRUB_LOOP,
   HOLD_MEDIA,
   type HoldMode,
 } from "@/lib/holdFlags";
@@ -16,7 +15,8 @@ type HoldExploreProps = {
 
 /**
  * Hold-to-explore media control.
- * Soft launch: SVG poster still. Scrub loop optional (HOLD_HAS_SCRUB_LOOP).
+ * v1 default: play-only (media not produced / scrub QA not passed).
+ * Scrub path (pointer/Space hold) only when HOLD_MODE=scrub and flag on.
  * Scroll never drives this video — see lib/motion.ts contract.
  */
 export function HoldExplore({ caption }: HoldExploreProps) {
@@ -24,13 +24,9 @@ export function HoldExplore({ caption }: HoldExploreProps) {
   const [mode] = useState<HoldMode>(() => getHoldMode());
   const [playing, setPlaying] = useState(false);
   const [reduced, setReduced] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(!HOLD_HAS_SCRUB_LOOP);
+  const [mediaMissing, setMediaMissing] = useState(false);
   const holdingRef = useRef(false);
   const rafRef = useRef<number | null>(null);
-
-  const posterSrc = assetPath(HOLD_MEDIA.poster);
-  const webmSrc = assetPath(HOLD_MEDIA.webm);
-  const mp4Src = assetPath(HOLD_MEDIA.mp4);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -41,25 +37,20 @@ export function HoldExplore({ caption }: HoldExploreProps) {
   }, []);
 
   const effectiveMode: HoldMode =
-    reduced || !ENABLE_HOLD_EXPLORE || videoFailed ? "play-only" : mode;
-
-  const canPlayVideo = HOLD_HAS_SCRUB_LOOP && !videoFailed;
+    reduced || !ENABLE_HOLD_EXPLORE ? "play-only" : mode;
 
   const togglePlay = useCallback(() => {
-    if (!canPlayVideo) return;
     const v = videoRef.current;
-    if (!v) return;
+    if (!v || mediaMissing) return;
     if (v.paused) {
-      void v
-        .play()
-        .then(() => setPlaying(true))
-        .catch(() => setVideoFailed(true));
+      void v.play().then(() => setPlaying(true)).catch(() => setMediaMissing(true));
     } else {
       v.pause();
       setPlaying(false);
     }
-  }, [canPlayVideo]);
+  }, [mediaMissing]);
 
+  /** rAF-throttled scrub — only when effectiveMode === scrub */
   const scrubTo = useCallback((clientX: number, target: HTMLElement) => {
     const v = videoRef.current;
     if (!v || v.seeking || !v.duration) return;
@@ -75,7 +66,7 @@ export function HoldExplore({ caption }: HoldExploreProps) {
 
   const onPointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (effectiveMode !== "scrub" || reduced || !canPlayVideo) return;
+      if (effectiveMode !== "scrub" || reduced) return;
       holdingRef.current = true;
       (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
       const v = videoRef.current;
@@ -85,17 +76,15 @@ export function HoldExplore({ caption }: HoldExploreProps) {
       }
       scrubTo(e.clientX, e.currentTarget);
     },
-    [effectiveMode, reduced, canPlayVideo, scrubTo],
+    [effectiveMode, reduced, scrubTo],
   );
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!holdingRef.current || effectiveMode !== "scrub" || !canPlayVideo) {
-        return;
-      }
+      if (!holdingRef.current || effectiveMode !== "scrub") return;
       scrubTo(e.clientX, e.currentTarget);
     },
-    [effectiveMode, canPlayVideo, scrubTo],
+    [effectiveMode, scrubTo],
   );
 
   const onPointerUp = useCallback(() => {
@@ -111,58 +100,51 @@ export function HoldExplore({ caption }: HoldExploreProps) {
   return (
     <div className="space-y-3">
       <div
-        className={[
-          "relative aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-panel",
-          !canPlayVideo ? "hold-poster-live" : "",
-        ].join(" ")}
+        className="relative aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-panel"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
         role="group"
         aria-label={
-          canPlayVideo
-            ? effectiveMode === "scrub"
-              ? "Hold to scrub tracking loop"
-              : "Tracking demo video — play only"
-            : "Tracking demo still — scrub loop not published yet"
+          effectiveMode === "scrub"
+            ? "Hold to scrub tracking loop"
+            : "Tracking demo video — play only"
         }
       >
-        {/* Poster always present so soft launch shows real visual media */}
-        {/* eslint-disable-next-line @next/next/no-img-element -- static SVG poster */}
-        <img
-          src={posterSrc}
-          alt=""
+        <video
+          ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
-          width={1280}
-          height={720}
-          decoding="async"
-        />
+          playsInline
+          preload="metadata"
+          poster={assetPath(HOLD_MEDIA.poster)}
+          controls={false}
+          onError={() => setMediaMissing(true)}
+          onEnded={() => setPlaying(false)}
+        >
+          {/* MP4 first — H.264 scrub loop; WebM optional when present */}
+          <source src={assetPath(HOLD_MEDIA.mp4)} type="video/mp4" />
+          <source src={assetPath(HOLD_MEDIA.webm)} type="video/webm" />
+        </video>
 
-        {canPlayVideo ? (
-          <video
-            ref={videoRef}
-            className="absolute inset-0 h-full w-full object-cover"
-            playsInline
-            preload="metadata"
-            poster={posterSrc}
-            controls={false}
-            onError={() => setVideoFailed(true)}
-            onEnded={() => setPlaying(false)}
-          >
-            <source src={webmSrc} type="video/webm" />
-            <source src={mp4Src} type="video/mp4" />
-          </video>
-        ) : null}
+        {mediaMissing && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-[linear-gradient(135deg,var(--frame)_0%,var(--bg)_50%,var(--panel)_100%)] p-6 text-center">
+            <span className="font-mono text-xs tracking-[0.24em] text-accent uppercase">
+              Media pending
+            </span>
+            <span className="mt-3 max-w-sm text-sm text-muted">
+              Tracking loop missing under public/media/hold. See
+              public/media/README.md for the ffmpeg recipe.
+            </span>
+          </div>
+        )}
 
         <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 bg-gradient-to-t from-bg/95 to-transparent p-4">
           <button
             type="button"
             onClick={togglePlay}
-            disabled={!canPlayVideo}
-            className="inline-flex items-center gap-2 rounded-sm border border-[var(--border)] bg-bg/90 px-4 py-2 font-mono text-xs text-ink transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:border-[var(--border)] disabled:hover:text-ink"
+            className="inline-flex items-center gap-2 rounded-sm border border-[var(--border)] bg-bg/90 px-4 py-2 font-mono text-xs text-ink transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             aria-pressed={playing}
-            aria-disabled={!canPlayVideo}
           >
             <span
               className={[
@@ -171,14 +153,12 @@ export function HoldExplore({ caption }: HoldExploreProps) {
               ].join(" ")}
               aria-hidden
             />
-            {canPlayVideo ? (playing ? "Pause" : "Play") : "Still"}
+            {playing ? "Pause" : "Play"}
           </button>
           <span className="font-mono text-[10px] tracking-wide text-muted uppercase">
-            {canPlayVideo
-              ? effectiveMode === "scrub" && !reduced
-                ? "Hold to explore"
-                : "Play only"
-              : "Poster · clip pending"}
+            {effectiveMode === "scrub" && !reduced
+              ? "Hold to explore"
+              : "Play only"}
             {reduced ? " · reduced motion" : ""}
           </span>
         </div>
@@ -188,15 +168,14 @@ export function HoldExplore({ caption }: HoldExploreProps) {
         <p className="text-sm text-muted">{caption}</p>
       ) : null}
 
-      {canPlayVideo && effectiveMode === "scrub" && !reduced ? (
+      {effectiveMode === "scrub" && !reduced ? (
         <p className="font-mono text-[11px] text-muted">
           Pointer-hold or drag to scrub. Scroll does not drive this clip.
         </p>
       ) : (
         <p className="font-mono text-[11px] text-muted">
-          {canPlayVideo
-            ? "Play/Pause is available. Hold-scrub ships after encode QA (ENABLE_HOLD_EXPLORE + HOLD_MODE=scrub)."
-            : "Soft-launch still — drop scrub-encoded loops in public/media/hold and set HOLD_HAS_SCRUB_LOOP when QA passes."}
+          Play/Pause is always available
+          {reduced ? " (reduced motion)." : "."}
         </p>
       )}
     </div>

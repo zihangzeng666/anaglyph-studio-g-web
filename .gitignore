@@ -18,6 +18,9 @@
 # production
 /build
 
+# raw capture dumps (debug only — not for site publish)
+/public/media/_raw_captures/
+
 # misc
 .DS_Store
 *.pem

@@ -68,122 +68,44 @@ body {
   outline-offset: 2px;
 }
 
+/* Smooth in-page anchor jumps (rail links) */
 html {
   scroll-behavior: smooth;
 }
 
-/* —— Enter animations (CSS; JS Reveal adds .is-revealed) —— */
-.reveal {
-  opacity: 1;
-  transform: none;
-}
-
-.reveal.reveal-ready {
-  opacity: 0;
-  transform: translate3d(0, 18px, 0);
-  transition:
-    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+/* Pipeline sticky-stack cards — GPU-friendly; no filter thrash */
+#pipeline [data-chapter-id] {
   will-change: opacity, transform;
+  backface-visibility: hidden;
+  transition:
+    border-color 0.55s ease,
+    background-color 0.55s ease,
+    box-shadow 0.55s ease;
 }
 
-.reveal.reveal-ready.is-revealed {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+#pipeline [data-chapter-id].is-active-chapter {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  background-color: color-mix(in srgb, var(--panel) 94%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--accent) 22%, transparent),
+    0 28px 70px rgba(0, 0, 0, 0.45);
 }
 
-/* Hero staggered load-in */
-@keyframes hero-rise {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 16px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+#pipeline [data-chapter-id].is-peek-next {
+  border-color: color-mix(in srgb, var(--accent) 18%, var(--border));
 }
 
-.hero-enter {
-  animation: hero-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+#pipeline [data-chapter-id].is-resting {
+  border-color: var(--border);
 }
 
-.hero-enter-1 {
-  animation-delay: 0.05s;
-}
-.hero-enter-2 {
-  animation-delay: 0.14s;
-}
-.hero-enter-3 {
-  animation-delay: 0.24s;
-}
-.hero-enter-4 {
-  animation-delay: 0.34s;
-}
-.hero-enter-5 {
-  animation-delay: 0.44s;
+#pipeline [data-chapter-media],
+#pipeline [data-chapter-copy] {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
 }
 
-/* Path card selection pulse */
-@keyframes path-pulse {
-  0% {
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent);
-    border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  }
-  70% {
-    box-shadow: 0 0 0 10px transparent;
-  }
-  100% {
-    box-shadow: 0 0 0 0 transparent;
-    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
-  }
-}
-
-.path-card-pulse {
-  animation: path-pulse 0.85s ease-out;
-  border-color: color-mix(in srgb, var(--accent) 50%, transparent) !important;
-}
-
-/* Active pipeline chapter emphasis (JS also sets data-chapter-active) */
-.chapter-panel[data-chapter-active="true"] {
-  border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
-  background: color-mix(in srgb, var(--panel) 88%, var(--accent) 4%);
-}
-
-/* Hold poster subtle breathing (still only) */
-@keyframes hold-breathe {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.015);
-  }
-}
-
-.hold-poster-live img {
-  animation: hold-breathe 8s ease-in-out infinite;
-  transform-origin: center;
-}
-
-/* Scroll-driven section fades (progressive enhancement; no JS) */
-@supports (animation-timeline: view()) {
-  .view-reveal {
-    animation: hero-rise linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 35%;
-  }
-
-  .view-reveal-delay-1 {
-    animation-range: entry 5% entry 40%;
-  }
-
-  .view-reveal-delay-2 {
-    animation-range: entry 10% entry 45%;
-  }
-}
-
-/* Reduced-motion: kill non-essential CSS transitions (JS pins handled in lib/motion.ts) */
+/* Reduced-motion: kill non-essential CSS transitions */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -200,14 +122,5 @@ html {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-
-  .reveal.reveal-ready {
-    opacity: 1;
-    transform: none;
-  }
-
-  .hold-poster-live img {
-    animation: none;
   }
 }

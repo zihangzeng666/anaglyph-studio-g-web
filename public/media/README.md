@@ -81,17 +81,30 @@ Until assets land and mid-laptop QA passes (≥55 fps scrub, long tasks &lt;50 m
 
 ## Pipeline stills
 
-Soft launch ships SVG placeholders (regenerate with `node scripts/generate-media-placeholders.mjs`).
-Replace with claim-safe captures at the same paths (or update `content/chapters.ts`):
+Place claim-safe crops at paths referenced in `content/chapters.ts`:
 
-- `/media/pipeline/setup.svg` (or `.webp` / `.png`)
-- `/media/pipeline/tags.svg`
-- `/media/pipeline/camera-k.svg`
-- `/media/pipeline/solve-cmm.svg`
-- `/media/pipeline/scene.svg`
-- `/media/pipeline/track.svg`
-- `/media/hold/track-poster.svg` (hold still until scrub loops land)
+- `/media/pipeline/setup.png`
+- `/media/pipeline/tags.png`
+- `/media/pipeline/camera-k.png`
+- `/media/pipeline/solve-cmm.png`
+- `/media/pipeline/scene.png`
+- `/media/pipeline/track.png`
 
-Prefer WebP/AVIF for production captures. Use `assetPath()` for all `/media/*` URLs so GitHub Pages `basePath` works.
+### Capture from Studio G (real UI)
 
-When scrub loops are ready: add `track-scrub.webm` + `track-scrub.mp4`, set `HOLD_HAS_SCRUB_LOOP = true` in `src/lib/holdFlags.ts`.
+```powershell
+# Rebuild Studio G if src changed, then:
+python scripts/capture_studio_g_shots.py
+python scripts/composite_live_media.py   # fills Camera/Track feed when OpenCV lacks MP4
+```
+
+Startup hooks (Studio G binary):
+
+| Env / file | Effect |
+|------------|--------|
+| `ANAGLYPH_STUDIO_PAGE` | 0–7 page enum |
+| `ANAGLYPH_STUDIO_WORKFLOW` | 0–3 workflow |
+| `ANAGLYPH_STUDIO_LOAD_SCENE` | path to `*_scene.json` |
+| `output/.marketing_start_capture` | start video/webcam feed |
+
+Prefer WebP/AVIF for production; PNG OK during soft launch.

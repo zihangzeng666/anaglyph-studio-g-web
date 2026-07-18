@@ -2,9 +2,8 @@ import type { Chapter } from "./types";
 
 /**
  * Pipeline scroll chapters: Setup → Tags → Camera K → Solve/CMM → Scene → Track.
- * Soft launch ships industrial SVG placeholders under public/media/pipeline.
- * Replace with capture stills (same basenames or update src) when ready.
- * v1 motion: crossfade stills (hold-scrub is section "hold", not scroll).
+ * Media: industrial stills under public/media/pipeline (regenerate via
+ * scripts/gen_media_placeholders.py). Hold scrub is section "hold", not scroll.
  */
 export const chapters: Chapter[] = [
   {
@@ -19,10 +18,10 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/setup.svg",
+      src: "/media/pipeline/setup.png",
       alt: "Studio G Setup page with case, tags, and outline fields",
     },
-    motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },
+    motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
   {
     id: "tags",
@@ -36,10 +35,10 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/tags.svg",
+      src: "/media/pipeline/tags.png",
       alt: "Printable AprilTag sheet and ChArUco board crop",
     },
-    motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },
+    motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
   {
     id: "camera-k",
@@ -54,10 +53,10 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/camera-k.svg",
+      src: "/media/pipeline/camera-k.png",
       alt: "Studio G Calibrate page — Measure K, not FOV as hero",
     },
-    motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },
+    motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
   {
     id: "solve-cmm",
@@ -72,10 +71,10 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/solve-cmm.svg",
+      src: "/media/pipeline/solve-cmm.png",
       alt: "Dual panel: PnP capture annotate versus Build from CMM",
     },
-    motion: { scrollVh: 160, pin: true, mediaMode: "crossfade" },
+    motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
   {
     id: "scene",
@@ -89,10 +88,10 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/scene.svg",
+      src: "/media/pipeline/scene.png",
       alt: "Studio G Scene page with 3D preview",
     },
-    motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },
+    motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
   {
     id: "track",
@@ -107,9 +106,9 @@ export const chapters: Chapter[] = [
     ],
     media: {
       type: "image",
-      src: "/media/pipeline/track.svg",
+      src: "/media/pipeline/track.png",
       alt: "Live tracking with outline overlay and error readout",
     },
-    motion: { scrollVh: 140, pin: true, mediaMode: "crossfade" },
+    motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
 ];
