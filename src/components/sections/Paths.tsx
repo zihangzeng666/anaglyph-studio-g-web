@@ -1,6 +1,10 @@
+"use client";
+
 import { workflows } from "../../../content/site";
-import { PathDiagram } from "./PathDiagram";
+import { Reveal } from "@/components/Reveal";
+import { PathDiagram, scrollToWorkflow } from "./PathDiagram";
 import { SectionShell } from "./SectionShell";
+import type { WorkflowId } from "../../../content/types";
 
 /**
  * Paths — interactive SVG for Load · track / Build · PnP / Build · CMM.
@@ -14,52 +18,61 @@ export function Paths() {
       eyebrow="Three paths"
       title="Pick a workflow. Follow the strip."
     >
-      <p className="mb-10 max-w-2xl text-base leading-relaxed text-muted">
-        Product labels match Studio G exactly. On{" "}
-        <span className="font-mono text-ink">Load · track</span>, Calibrate is
-        optional (dashed). Use{" "}
-        <span className="font-mono text-ink">SWAP PATH</span> or the workflow
-        tabs — arrow keys cycle when a tab is focused.
-      </p>
+      <Reveal>
+        <p className="mb-10 max-w-2xl text-base leading-relaxed text-muted">
+          Product labels match Studio G exactly. On{" "}
+          <span className="font-mono text-ink">Load · track</span>, Calibrate is
+          optional (dashed). Use{" "}
+          <span className="font-mono text-ink">SWAP PATH</span> or the workflow
+          tabs — arrow keys cycle when a tab is focused. Double-click a tab to
+          jump into the matching pipeline chapter.
+        </p>
+      </Reveal>
 
-      <div className="mb-10">
+      <Reveal delayMs={60} className="mb-10">
         <PathDiagram />
-      </div>
+      </Reveal>
 
       <ul className="grid gap-4 md:grid-cols-3">
-        {workflows.map((wf) => (
-          <li
-            key={wf.id}
-            id={`path-${wf.id}`}
-            className="rounded-sm border border-[var(--border)] bg-panel/40 p-5"
-          >
-            <h3 className="font-mono text-sm tracking-wide text-accent">
-              {wf.label}
-            </h3>
-            <p className="mt-2 text-sm text-muted">{wf.sceneSource}</p>
-            <ol className="mt-4 space-y-1.5 font-mono text-xs text-ink/90">
-              {wf.id === "load-track" ? (
-                <>
-                  <li>
-                    <span className="text-accent/70">→</span> Camera
-                  </li>
-                  <li className="text-muted">
-                    <span className="text-accent/50">→</span> Calibrate{" "}
-                    <span className="text-muted">(optional)</span>
-                  </li>
-                  <li>
-                    <span className="text-accent/70">→</span> Track
-                  </li>
-                </>
-              ) : (
-                wf.steps.map((step) => (
-                  <li key={step}>
-                    <span className="text-accent/70">→</span> {step}
-                  </li>
-                ))
-              )}
-            </ol>
-          </li>
+        {workflows.map((wf, i) => (
+          <Reveal key={wf.id} as="li" delayMs={80 + i * 70}>
+            <button
+              type="button"
+              id={`path-${wf.id}`}
+              onClick={() => scrollToWorkflow(wf.id as WorkflowId)}
+              onDoubleClick={() =>
+                scrollToWorkflow(wf.id as WorkflowId, { deep: true })
+              }
+              className="h-full w-full rounded-sm border border-[var(--border)] bg-panel/40 p-5 text-left transition-all duration-300 hover:border-accent/40 hover:bg-panel/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              <h3 className="font-mono text-sm tracking-wide text-accent">
+                {wf.label}
+              </h3>
+              <p className="mt-2 text-sm text-muted">{wf.sceneSource}</p>
+              <ol className="mt-4 space-y-1.5 font-mono text-xs text-ink/90">
+                {wf.id === "load-track" ? (
+                  <>
+                    <li>
+                      <span className="text-accent/70">→</span> Camera
+                    </li>
+                    <li className="text-muted">
+                      <span className="text-accent/50">→</span> Calibrate{" "}
+                      <span className="text-muted">(optional)</span>
+                    </li>
+                    <li>
+                      <span className="text-accent/70">→</span> Track
+                    </li>
+                  </>
+                ) : (
+                  wf.steps.map((step) => (
+                    <li key={step}>
+                      <span className="text-accent/70">→</span> {step}
+                    </li>
+                  ))
+                )}
+              </ol>
+            </button>
+          </Reveal>
         ))}
       </ul>
     </SectionShell>

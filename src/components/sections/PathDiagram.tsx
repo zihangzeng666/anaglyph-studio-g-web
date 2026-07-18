@@ -3,19 +3,51 @@
 import { useCallback, useId, useState } from "react";
 import { workflows } from "../../../content/site";
 import type { WorkflowId } from "../../../content/types";
+import { getPrefersReducedMotion, scrollToId } from "@/lib/motion";
 
 /**
  * Interactive path diagram: Load · track / Build · PnP / Build · CMM.
  * SWAP PATH cycles highlight; keyboard accessible. Static SVG remains readable
- * without JS. Scroll-to-chapter hooks are stubs until the motion PR.
+ * without JS. Selecting a path scrolls to its card and pulses the active row.
  */
 
 const WORKFLOW_ORDER: WorkflowId[] = ["load-track", "build-pnp", "build-cmm"];
 
-/** Stub for PR5 — chapter controller can wire scroll-to-workflow later. */
-export function scrollToWorkflow(id: WorkflowId): void {
-  void id;
-  // no-op until GSAP chapter controller lands
+/** Map workflow → primary pipeline chapter for deeper orientation. */
+const WORKFLOW_CHAPTER: Record<WorkflowId, string> = {
+  "load-track": "track",
+  "build-pnp": "solve-cmm",
+  "build-cmm": "solve-cmm",
+};
+
+/** Scroll to path card + light pulse; optionally nudge pipeline chapter into view. */
+export function scrollToWorkflow(
+  id: WorkflowId,
+  opts?: { deep?: boolean },
+): void {
+  if (typeof document === "undefined") return;
+
+  const card = document.getElementById(`path-${id}`);
+  if (card) {
+    card.classList.remove("path-card-pulse");
+    // restart CSS animation
+    void card.offsetWidth;
+    card.classList.add("path-card-pulse");
+    card.scrollIntoView({
+      behavior: getPrefersReducedMotion() ? "auto" : "smooth",
+      block: "nearest",
+    });
+    window.setTimeout(() => card.classList.remove("path-card-pulse"), 900);
+  }
+
+  if (opts?.deep) {
+    const chapterId = WORKFLOW_CHAPTER[id];
+    if (chapterId) {
+      window.setTimeout(() => {
+        scrollToId(chapterId, { block: "start" });
+      }, getPrefersReducedMotion() ? 0 : 280);
+    }
+  }
 }
 
 function stepsForWorkflow(wf: (typeof workflows)[number]): string[] {
@@ -38,11 +70,11 @@ export function PathDiagram() {
     });
   }, []);
 
-  const select = useCallback((id: WorkflowId) => {
+  const select = useCallback((id: WorkflowId, deep = false) => {
     const idx = WORKFLOW_ORDER.indexOf(id);
     if (idx >= 0) {
       setActiveIndex(idx);
-      scrollToWorkflow(id);
+      scrollToWorkflow(id, { deep });
     }
   }, []);
 
@@ -111,9 +143,11 @@ export function PathDiagram() {
               aria-selected={selected}
               aria-controls={`${baseId}-panel-${wf.id}`}
               tabIndex={selected ? 0 : -1}
-              onClick={() => select(wf.id)}
+              onClick={() => select(wf.id, false)}
+              onDoubleClick={() => select(wf.id, true)}
+              title="Double-click to jump to matching pipeline chapter"
               className={[
-                "rounded-sm border px-3 py-1.5 font-mono text-xs tracking-wide transition-colors",
+                "rounded-sm border px-3 py-1.5 font-mono text-xs tracking-wide transition-colors duration-200",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
                 selected
                   ? "border-accent bg-accent/15 text-accent"
@@ -194,7 +228,8 @@ export function PathDiagram() {
               <g
                 key={wf.id}
                 opacity={active ? 1 : 0.42}
-                style={{ transition: "opacity 0.2s ease" }}
+                style={{ transition: "opacity 0.35s ease" }}
+                className={active ? "path-row-active" : undefined}
               >
                 <text
                   x={startX}

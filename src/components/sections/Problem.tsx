@@ -32,12 +32,12 @@ export function Problem() {
       eyebrow="Before / after"
       title="One console instead of a script chain"
     >
-      <p className="mb-10 max-w-2xl text-base leading-relaxed text-muted">
+      <p className="view-reveal mb-10 max-w-2xl text-base leading-relaxed text-muted">
         {claim?.statement ??
           "One integrated Studio instead of a chain of CLI tools."}
       </p>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="view-reveal view-reveal-delay-1 grid gap-6 lg:grid-cols-2">
         <article className="rounded-sm border border-[var(--border)] bg-panel/50 p-6">
           <h3 className="mb-4 font-mono text-xs tracking-[0.18em] text-muted uppercase">
             Before — numbered CLI scripts

@@ -6,6 +6,7 @@ import {
   destroyMotion,
   getPrefersReducedMotion,
   registerChapters,
+  scrollToId,
 } from "@/lib/motion";
 
 type ChapterRailProps = {
@@ -59,6 +60,7 @@ export function ChapterRail({
     <nav
       aria-label="Pipeline chapters"
       data-reduced-motion={reduced ? "true" : "false"}
+      data-reveal
       className="mb-12 flex flex-wrap gap-2 border-b border-[var(--border)] pb-6 md:sticky md:top-20 md:z-30 md:bg-bg/90 md:backdrop-blur-sm md:py-3"
     >
       {chapters.map((chapter) => {
@@ -68,11 +70,20 @@ export function ChapterRail({
             key={chapter.id}
             href={`#${chapter.id}`}
             aria-current={current ? "true" : undefined}
+            onClick={(e) => {
+              e.preventDefault();
+              setActiveId(chapter.id);
+              scrollToId(chapter.id, { block: "start" });
+              // Keep hash for shareable deep links without full jump fight
+              if (typeof history !== "undefined") {
+                history.replaceState(null, "", `#${chapter.id}`);
+              }
+            }}
             className={[
-              "rounded-sm border px-3 py-1.5 font-mono text-xs transition-colors",
+              "rounded-sm border px-3 py-1.5 font-mono text-xs transition-colors duration-200",
               "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
               current
-                ? "border-accent bg-accent/15 text-accent"
+                ? "border-accent bg-accent/15 text-accent shadow-[0_0_0_1px_color-mix(in_srgb,var(--accent)_35%,transparent)]"
                 : "border-[var(--border)] bg-panel/40 text-muted hover:border-accent/40 hover:text-accent",
             ].join(" ")}
           >

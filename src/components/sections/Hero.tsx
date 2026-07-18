@@ -33,22 +33,22 @@ export function Hero() {
       />
 
       <div className="relative mx-auto flex min-h-[78vh] max-w-6xl flex-col justify-center px-6 py-20 md:py-28">
-        <p className="mb-6 font-mono text-xs tracking-[0.28em] text-accent uppercase">
+        <p className="hero-enter hero-enter-1 mb-6 font-mono text-xs tracking-[0.28em] text-accent uppercase">
           {site.productName} · Windows
         </p>
 
         <h1
           id="hero-heading"
-          className="max-w-3xl font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl md:text-7xl"
+          className="hero-enter hero-enter-2 max-w-3xl font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl md:text-7xl"
         >
           {site.tagline}
         </h1>
 
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
+        <p className="hero-enter hero-enter-3 mt-6 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
           {site.lead}
         </p>
 
-        <div className="mt-10 flex flex-wrap items-center gap-4">
+        <div className="hero-enter hero-enter-4 mt-10 flex flex-wrap items-center gap-4">
           {downloadPublic && downloadHref ? (
             <Link
               href={downloadHref}
@@ -78,8 +78,11 @@ export function Hero() {
           </Link>
         </div>
 
-        {/* Abstract outline lock motif (static SVG) */}
-        <div className="mt-16 max-w-md opacity-90" aria-hidden>
+        {/* Abstract outline lock motif */}
+        <div
+          className="hero-enter hero-enter-5 mt-16 max-w-md opacity-90"
+          aria-hidden
+        >
           <svg
             viewBox="0 0 360 120"
             className="h-auto w-full text-accent"

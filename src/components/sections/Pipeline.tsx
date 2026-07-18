@@ -15,23 +15,27 @@ export function Pipeline() {
       eyebrow="Pipeline"
       title="Explore the pipeline"
     >
-      <p className="mb-8 max-w-2xl text-base leading-relaxed text-muted">
+      <p
+        data-reveal
+        className="mb-8 max-w-2xl text-base leading-relaxed text-muted"
+      >
         Six chapters from case setup to live outline lock. Jump any step via the
-        rail. Desktop may pin chapters for scroll storytelling; reduced-motion
-        users get the full static stack with instant anchors.
+        rail. Desktop pins each chapter for scroll storytelling; active panels
+        brighten and lift. Reduced-motion users get the full static stack with
+        instant anchors.
       </p>
 
       {/* Client island: GSAP loads dynamically inside lib/motion.ts */}
       <ChapterRail chapters={chapters} />
 
-      <div className="space-y-8" data-pipeline-chapters>
+      <div className="space-y-10 md:space-y-14" data-pipeline-chapters>
         {chapters.map((chapter) => (
           <article
             key={chapter.id}
             id={chapter.id}
             data-chapter-id={chapter.id}
             data-media-mode={chapter.motion.mediaMode}
-            className="scroll-mt-28 grid gap-6 rounded-sm border border-[var(--border)] bg-panel/40 p-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:p-8"
+            className="chapter-panel scroll-mt-28 grid gap-6 rounded-sm border border-[var(--border)] bg-panel/40 p-6 will-change-transform md:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] md:p-8"
             aria-labelledby={`${chapter.id}-title`}
           >
             <div>
@@ -59,8 +63,8 @@ export function Pipeline() {
               </ul>
             </div>
 
-            <figure className="flex min-h-[12rem] flex-col rounded-sm border border-[var(--border)] bg-bg/70 p-3">
-              <div className="relative aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-frame/40">
+            <figure className="chapter-media flex min-h-[12rem] flex-col rounded-sm border border-[var(--border)] bg-bg/70 p-3">
+              <div className="relative aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-frame/40 shadow-[inset_0_0_0_1px_rgba(212,146,60,0.08)]">
                 {/* eslint-disable-next-line @next/next/no-img-element -- static export + SVG placeholders */}
                 <img
                   src={assetPath(chapter.media.src)}

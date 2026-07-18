@@ -111,7 +111,10 @@ export function HoldExplore({ caption }: HoldExploreProps) {
   return (
     <div className="space-y-3">
       <div
-        className="relative aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-panel"
+        className={[
+          "relative aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-panel",
+          !canPlayVideo ? "hold-poster-live" : "",
+        ].join(" ")}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}

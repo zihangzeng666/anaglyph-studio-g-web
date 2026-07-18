@@ -16,7 +16,7 @@ export function Hold() {
       eyebrow="Hold to explore"
       title="Tracking, frame by frame"
     >
-      <div className="grid items-center gap-8 lg:grid-cols-[1.2fr_1fr]">
+      <div className="view-reveal grid items-center gap-8 lg:grid-cols-[1.2fr_1fr]">
         <HoldExplore
           caption={
             lock?.statement ??
@@ -24,7 +24,7 @@ export function Hold() {
           }
         />
 
-        <div>
+        <div className="view-reveal view-reveal-delay-1">
           <p className="text-base leading-relaxed text-muted">
             {lock?.statement ??
               "Live tracking locks a CAD outline onto the mould with tag detection."}

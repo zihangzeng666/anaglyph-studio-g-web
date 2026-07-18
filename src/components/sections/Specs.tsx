@@ -8,20 +8,20 @@ import { SectionShell } from "./SectionShell";
 export function Specs() {
   return (
     <SectionShell id="specs" eyebrow="Specs" title="Stack & capabilities">
-      <p className="mb-4 max-w-2xl text-base leading-relaxed text-muted">
+      <p className="view-reveal mb-4 max-w-2xl text-base leading-relaxed text-muted">
         Product-true rows only — no invented tolerances. Packaging sizes are
         measured per release; re-check{" "}
         <span className="font-mono text-ink">sizeHint</span> when a new zip
         lands.
       </p>
-      <p className="mb-8 max-w-2xl text-sm leading-relaxed text-muted">
+      <p className="view-reveal view-reveal-delay-1 mb-8 max-w-2xl text-sm leading-relaxed text-muted">
         Vision stack is OpenCV 4.11 with printable AprilTags and ChArUco for
         real camera K. Build with photo PnP, CMM CSV corners, or load an
         existing scene — then track live with reprojection error in pixels
         (optional approx mm at depth).
       </p>
 
-      <dl className="grid gap-px overflow-hidden rounded-sm border border-[var(--border)] bg-[var(--border)] sm:grid-cols-2">
+      <dl className="view-reveal view-reveal-delay-2 grid gap-px overflow-hidden rounded-sm border border-[var(--border)] bg-[var(--border)] sm:grid-cols-2">
         {site.specs.map((row) => (
           <div
             key={row.label}
