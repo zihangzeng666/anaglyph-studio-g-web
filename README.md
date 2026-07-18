@@ -69,6 +69,14 @@ public/
   media/         # Marketing media (later PRs)
 ```
 
+## Deploy
+
+Static export only — see [docs/DEPLOY.md](./docs/DEPLOY.md) for security headers, rollback, soft-launch checklist, and craft-reference legal note. Performance/a11y gates: [docs/PERF.md](./docs/PERF.md). Media encode: [public/media/README.md](./public/media/README.md).
+
+```bash
+npm run build && npm run preview
+```
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for owners (eng, claim approver, media capturer) and PR workflow.

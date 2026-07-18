@@ -54,7 +54,8 @@ export function Footer() {
 
       <p className="mt-12 border-t border-[var(--border)] pt-6 font-mono text-[11px] text-muted">
         © {year} {site.productName}. All rights reserved. Product name is{" "}
-        {site.productName} / {site.shortName} only.
+        {site.productName} / {site.shortName} only. Windows 10/11 x64 · ready-to-run
+        zip · SmartScreen may warn on unsigned builds.
       </p>
     </SectionShell>
   );

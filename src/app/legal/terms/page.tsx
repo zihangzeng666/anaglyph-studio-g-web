@@ -26,8 +26,14 @@ export default function TermsPage() {
         The product name is {site.productName} / {site.shortName} only. Do not
         brand or describe the product as “Grok.”
       </p>
+      <p>
+        Interaction patterns on this marketing site may be inspired by public
+        craft references; no third-party models, copy, or trademarks are used.
+      </p>
       <p className="font-mono text-xs text-muted">
-        Draft notice — legal review required before production.
+        Draft notice — legal review required before production. See{" "}
+        <span className="text-ink">docs/DEPLOY.md</span> for the soft-launch
+        checklist.
       </p>
     </UtilityPage>
   );

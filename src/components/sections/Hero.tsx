@@ -27,7 +27,7 @@ export function Hero() {
 
       <div className="relative mx-auto flex min-h-[78vh] max-w-6xl flex-col justify-center px-6 py-20 md:py-28">
         <p className="mb-6 font-mono text-xs tracking-[0.28em] text-accent uppercase">
-          {site.productName}
+          {site.productName} · Windows
         </p>
 
         <h1
