@@ -29,7 +29,6 @@ export function track(event: string, props?: AnalyticsProps): void {
   if (typeof window === "undefined") return;
 
   if (isDev) {
-    // eslint-disable-next-line no-console
     console.debug("[analytics]", event, props ?? {});
   }
 
