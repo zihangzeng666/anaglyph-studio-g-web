@@ -1,10 +1,18 @@
+import { site } from "../../content/site";
+import { sectionComponents } from "@/components/sections";
+
+/**
+ * Long-page home: maps content/site.ts sections registry → components only.
+ * Parallel section PRs replace modules under components/sections without
+ * reordering sibling JSX by hand.
+ */
 export default function HomePage() {
   return (
-    <main
-      id="main"
-      className="mx-auto flex min-h-[70vh] max-w-6xl flex-col px-6 py-16"
-    >
-      {/* Section slots land in later PRs (hero, pipeline, paths, …) */}
+    <main id="main">
+      {site.sections.map((slot) => {
+        const Component = sectionComponents[slot.id];
+        return <Component key={slot.id} />;
+      })}
     </main>
   );
 }
