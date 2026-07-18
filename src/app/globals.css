@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0c0e11;
+  --panel: #14181e;
+  --frame: #1c222a;
+  --border: rgba(255, 255, 255, 0.06);
+  --text: #ebeef0;
+  --muted: #9aa3b0;
+  --accent: #d4923c;
+  --accent-hi: #e6a852;
+  --accent-lo: #ad7329;
+  --ink-on-accent: #1f1a12;
+  --ok: #59b87a;
+  --warn: #e0ad5a;
+  --bad: #e05c57;
+  --mono: "IBM Plex Mono", "Cascadia Code", ui-monospace, monospace;
+  --sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --display: "Space Grotesk", var(--sans);
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 40%, transparent);
+  color: var(--text);
+}
+
+/* Skip link: visible on focus for keyboard users */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--accent);
+  color: var(--ink-on-accent);
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.25rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid var(--accent-hi);
+  outline-offset: 2px;
+}
