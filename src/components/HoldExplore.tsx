@@ -1,12 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  ENABLE_HOLD_EXPLORE,
-  getHoldMode,
-  HOLD_MEDIA,
-  type HoldMode,
-} from "@/lib/holdFlags";
+import { HOLD_MEDIA } from "@/lib/holdFlags";
 import { assetPath } from "@/lib/assetPath";
 
 type HoldExploreProps = {
@@ -14,19 +9,14 @@ type HoldExploreProps = {
 };
 
 /**
- * Hold-to-explore media control.
- * v1 default: play-only (media not produced / scrub QA not passed).
- * Scrub path (pointer/Space hold) only when HOLD_MODE=scrub and flag on.
- * Scroll never drives this video — see lib/motion.ts contract.
+ * Tracking demo video — muted autoplay + loop.
+ * No hold-to-explore / scrub; scroll never drives the clip.
  */
 export function HoldExplore({ caption }: HoldExploreProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [mode] = useState<HoldMode>(() => getHoldMode());
   const [playing, setPlaying] = useState(false);
-  const [reduced, setReduced] = useState(false);
   const [mediaMissing, setMediaMissing] = useState(false);
-  const holdingRef = useRef(false);
-  const rafRef = useRef<number | null>(null);
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -36,93 +26,62 @@ export function HoldExplore({ caption }: HoldExploreProps) {
     return () => mq.removeEventListener("change", onMq);
   }, []);
 
-  const effectiveMode: HoldMode =
-    reduced || !ENABLE_HOLD_EXPLORE ? "play-only" : mode;
+  // Autoplay muted loop when motion is allowed
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || mediaMissing || reduced) return;
+
+    v.muted = true;
+    v.defaultMuted = true;
+    v.loop = true;
+    const tryPlay = () => {
+      void v
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => {
+          // Autoplay blocked — user can press Play
+          setPlaying(false);
+        });
+    };
+    if (v.readyState >= 2) tryPlay();
+    else v.addEventListener("loadeddata", tryPlay, { once: true });
+  }, [mediaMissing, reduced]);
 
   const togglePlay = useCallback(() => {
     const v = videoRef.current;
     if (!v || mediaMissing) return;
     if (v.paused) {
-      void v.play().then(() => setPlaying(true)).catch(() => setMediaMissing(true));
+      void v
+        .play()
+        .then(() => setPlaying(true))
+        .catch(() => setMediaMissing(true));
     } else {
       v.pause();
       setPlaying(false);
     }
   }, [mediaMissing]);
 
-  /** rAF-throttled scrub — only when effectiveMode === scrub */
-  const scrubTo = useCallback((clientX: number, target: HTMLElement) => {
-    const v = videoRef.current;
-    if (!v || v.seeking || !v.duration) return;
-    const rect = target.getBoundingClientRect();
-    const p = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
-    if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-    rafRef.current = requestAnimationFrame(() => {
-      if (!v.seeking) {
-        v.currentTime = p * v.duration;
-      }
-    });
-  }, []);
-
-  const onPointerDown = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      if (effectiveMode !== "scrub" || reduced) return;
-      holdingRef.current = true;
-      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-      const v = videoRef.current;
-      if (v) {
-        v.pause();
-        setPlaying(false);
-      }
-      scrubTo(e.clientX, e.currentTarget);
-    },
-    [effectiveMode, reduced, scrubTo],
-  );
-
-  const onPointerMove = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!holdingRef.current || effectiveMode !== "scrub") return;
-      scrubTo(e.clientX, e.currentTarget);
-    },
-    [effectiveMode, scrubTo],
-  );
-
-  const onPointerUp = useCallback(() => {
-    holdingRef.current = false;
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
-
   return (
     <div className="space-y-3">
       <div
         className="relative aspect-video overflow-hidden rounded-sm border border-[var(--border)] bg-panel"
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerUp}
         role="group"
-        aria-label={
-          effectiveMode === "scrub"
-            ? "Hold to scrub tracking loop"
-            : "Tracking demo video — play only"
-        }
+        aria-label="Tracking demo video — looping playback"
       >
         <video
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
           playsInline
+          muted
+          loop
+          autoPlay={!reduced}
           preload="metadata"
           poster={assetPath(HOLD_MEDIA.poster)}
           controls={false}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
           onError={() => setMediaMissing(true)}
-          onEnded={() => setPlaying(false)}
         >
-          {/* MP4 first — H.264 scrub loop; WebM optional when present */}
           <source src={assetPath(HOLD_MEDIA.mp4)} type="video/mp4" />
           <source src={assetPath(HOLD_MEDIA.webm)} type="video/webm" />
         </video>
@@ -133,8 +92,7 @@ export function HoldExplore({ caption }: HoldExploreProps) {
               Media pending
             </span>
             <span className="mt-3 max-w-sm text-sm text-muted">
-              Tracking loop missing under public/media/hold. See
-              public/media/README.md for the ffmpeg recipe.
+              Tracking loop missing under public/media/hold.
             </span>
           </div>
         )}
@@ -143,7 +101,8 @@ export function HoldExplore({ caption }: HoldExploreProps) {
           <button
             type="button"
             onClick={togglePlay}
-            className="inline-flex items-center gap-2 rounded-sm border border-[var(--border)] bg-bg/90 px-4 py-2 font-mono text-xs text-ink transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            disabled={mediaMissing}
+            className="inline-flex items-center gap-2 rounded-sm border border-[var(--border)] bg-bg/90 px-4 py-2 font-mono text-xs text-ink transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-60"
             aria-pressed={playing}
           >
             <span
@@ -156,10 +115,7 @@ export function HoldExplore({ caption }: HoldExploreProps) {
             {playing ? "Pause" : "Play"}
           </button>
           <span className="font-mono text-[10px] tracking-wide text-muted uppercase">
-            {effectiveMode === "scrub" && !reduced
-              ? "Hold to explore"
-              : "Play only"}
-            {reduced ? " · reduced motion" : ""}
+            {reduced ? "Poster · reduced motion" : "Loop"}
           </span>
         </div>
       </div>
@@ -168,16 +124,11 @@ export function HoldExplore({ caption }: HoldExploreProps) {
         <p className="text-sm text-muted">{caption}</p>
       ) : null}
 
-      {effectiveMode === "scrub" && !reduced ? (
-        <p className="font-mono text-[11px] text-muted">
-          Pointer-hold or drag to scrub. Scroll does not drive this clip.
-        </p>
-      ) : (
-        <p className="font-mono text-[11px] text-muted">
-          Play/Pause is always available
-          {reduced ? " (reduced motion)." : "."}
-        </p>
-      )}
+      <p className="font-mono text-[11px] text-muted">
+        {reduced
+          ? "Autoplay paused for reduced motion — use Play if you want the clip."
+          : "Looping demo clip. Mute by default for autoplay."}
+      </p>
     </div>
   );
 }

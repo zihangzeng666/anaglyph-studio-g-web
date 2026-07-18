@@ -3,8 +3,7 @@ import { HoldExplore } from "@/components/HoldExplore";
 import { SectionShell } from "./SectionShell";
 
 /**
- * Hold — hold-to-explore tracking loop (gesture only; never scroll-scrubbed).
- * Default HOLD_MODE=play-only until media encode QA passes.
+ * Hold — looping tracking demo video (play/pause only, no scrub).
  */
 export function Hold() {
   const lock = getClaim("live-outline-lock");
@@ -13,7 +12,7 @@ export function Hold() {
   return (
     <SectionShell
       id="hold"
-      eyebrow="Hold to explore"
+      eyebrow="Live track"
       title="Tracking, frame by frame"
     >
       <div className="view-reveal grid items-center gap-8 lg:grid-cols-[1.2fr_1fr]">
@@ -42,8 +41,7 @@ export function Hold() {
           </ul>
           <p className="mt-6 text-sm text-muted">
             Caption describes a recorded demo, not a live accuracy certificate.
-            Under reduced motion, only Play/Pause is offered — no press-and-hold
-            trap.
+            Clip loops automatically; use Play/Pause anytime.
           </p>
         </div>
       </div>
