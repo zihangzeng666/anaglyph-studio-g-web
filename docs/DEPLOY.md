@@ -15,6 +15,31 @@ npm run build      # → out/
 npm run preview    # local static serve of out/
 ```
 
+### GitHub Pages (CI)
+
+Workflow: `.github/workflows/deploy-pages.yml`
+
+- Triggers on push to `main` or the soft-launch branch, plus `workflow_dispatch`
+- Sets `GITHUB_PAGES=true` so Next uses `basePath` `/anaglyph-studio-g-web`
+- Publishes `out/` via the official Pages deploy action
+
+Site URL (project pages):
+
+`https://<github-user>.github.io/anaglyph-studio-g-web/`
+
+Local parity build:
+
+```bash
+# Windows PowerShell
+$env:GITHUB_PAGES="true"; npm run build
+# bash
+GITHUB_PAGES=true npm run build
+```
+
+> **Private repos:** GitHub Pages for private repositories requires a paid plan
+> (Pro / Team). Free accounts should make the repo public for a public soft
+> launch, or host `out/` on Cloudflare Pages / Netlify / object storage instead.
+
 ### Production env (set on CI / host before build)
 
 | Variable | Purpose |
