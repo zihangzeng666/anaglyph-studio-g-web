@@ -6,6 +6,7 @@ import { Footer } from "./Footer";
 import { Hero } from "./Hero";
 import { Hold } from "./Hold";
 import { Paths } from "./Paths";
+import { PathDiagram } from "./PathDiagram";
 import { Pipeline } from "./Pipeline";
 import { Printables } from "./Printables";
 import { Problem } from "./Problem";
@@ -34,6 +35,7 @@ export {
   Footer,
   Hero,
   Hold,
+  PathDiagram,
   Paths,
   Pipeline,
   Printables,
