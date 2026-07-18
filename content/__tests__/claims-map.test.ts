@@ -108,6 +108,21 @@ describe("downloads placeholders", () => {
       expect(d.href).toMatch(/^https:\/\//i);
     }
   });
+
+  it("treats example.com placeholders as not live (soft launch: no public download CTAs)", async () => {
+    const { isDownloadLive, isRuntimeDownloadPublic, publicDownloadHref } =
+      await import("../downloads");
+
+    for (const d of downloads) {
+      expect(isDownloadLive(d.href)).toBe(false);
+    }
+    expect(isRuntimeDownloadPublic()).toBe(false);
+    expect(publicDownloadHref("runtime")).toBeNull();
+    expect(publicDownloadHref("source")).toBeNull();
+    expect(isDownloadLive("https://releases.example.org/app.zip")).toBe(true);
+    expect(isDownloadLive("https://example.com/app.zip")).toBe(false);
+    expect(isDownloadLive("#")).toBe(false);
+  });
 });
 
 describe("claim safety / branding", () => {

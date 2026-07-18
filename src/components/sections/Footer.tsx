@@ -1,21 +1,26 @@
 import Link from "next/link";
 import { site } from "../../../content/site";
+import { isRuntimeDownloadPublic } from "../../../content/downloads";
 import { BrandMark } from "@/components/BrandMark";
 import { SectionShell } from "./SectionShell";
 
-const FOOTER_LINKS = [
-  { href: "/download", label: "Download" },
-  { href: "/source", label: "Source" },
-  { href: "/demo", label: "Demo" },
-  { href: "/legal/privacy", label: "Privacy" },
-  { href: "/legal/terms", label: "Terms" },
-];
-
 /**
  * Footer — brand, utility links, product naming rule.
+ * Soft launch: Download omitted until a real release URL is configured.
  */
 export function Footer() {
   const year = new Date().getFullYear();
+  const downloadPublic = isRuntimeDownloadPublic();
+
+  const footerLinks = [
+    ...(downloadPublic
+      ? ([{ href: "/download", label: "Download" }] as const)
+      : []),
+    { href: "/source", label: "Source" },
+    { href: "/demo", label: "Demo" },
+    { href: "/legal/privacy", label: "Privacy" },
+    { href: "/legal/terms", label: "Terms" },
+  ];
 
   return (
     <SectionShell
@@ -38,7 +43,7 @@ export function Footer() {
 
         <nav aria-label="Footer">
           <ul className="flex flex-wrap gap-x-6 gap-y-2">
-            {FOOTER_LINKS.map((link) => (
+            {footerLinks.map((link) => (
               <li key={link.href}>
                 <Link
                   href={link.href}
@@ -54,8 +59,10 @@ export function Footer() {
 
       <p className="mt-12 border-t border-[var(--border)] pt-6 font-mono text-[11px] text-muted">
         © {year} {site.productName}. All rights reserved. Product name is{" "}
-        {site.productName} / {site.shortName} only. Windows 10/11 x64 · ready-to-run
-        zip · SmartScreen may warn on unsigned builds.
+        {site.productName} / {site.shortName} only. Windows 10/11 x64
+        {downloadPublic
+          ? " · ready-to-run zip · SmartScreen may warn on unsigned builds."
+          : " · design-partner demos available on request."}
       </p>
     </SectionShell>
   );

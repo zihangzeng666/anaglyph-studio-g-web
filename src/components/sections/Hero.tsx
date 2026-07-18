@@ -1,13 +1,20 @@
 import Link from "next/link";
 import { site } from "../../../content/site";
-import { downloadsById } from "../../../content/downloads";
+import {
+  downloadsById,
+  isRuntimeDownloadPublic,
+  publicDownloadHref,
+} from "../../../content/downloads";
 
 /**
  * Hero — "Lock the outline." Claim-safe lead + primary CTAs.
+ * Soft launch: no public download link — primary CTA is Request demo.
  * Readable without GSAP; poster-first industrial frame.
  */
 export function Hero() {
   const runtime = downloadsById.get("runtime");
+  const downloadHref = publicDownloadHref("runtime");
+  const downloadPublic = isRuntimeDownloadPublic();
 
   return (
     <section
@@ -42,12 +49,21 @@ export function Hero() {
         </p>
 
         <div className="mt-10 flex flex-wrap items-center gap-4">
-          <Link
-            href={runtime?.href || "/download"}
-            className="inline-flex items-center justify-center rounded-sm bg-accent px-5 py-3 font-sans text-sm font-semibold text-[var(--ink-on-accent)] transition-colors hover:bg-accent-hi focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-hi"
-          >
-            {runtime?.label ?? "Download Studio_G"}
-          </Link>
+          {downloadPublic && downloadHref ? (
+            <Link
+              href={downloadHref}
+              className="inline-flex items-center justify-center rounded-sm bg-accent px-5 py-3 font-sans text-sm font-semibold text-[var(--ink-on-accent)] transition-colors hover:bg-accent-hi focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-hi"
+            >
+              {runtime?.label ?? "Download Studio_G"}
+            </Link>
+          ) : (
+            <Link
+              href="/demo"
+              className="inline-flex items-center justify-center rounded-sm bg-accent px-5 py-3 font-sans text-sm font-semibold text-[var(--ink-on-accent)] transition-colors hover:bg-accent-hi focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-hi"
+            >
+              Request a demo
+            </Link>
+          )}
           <a
             href="#pipeline"
             className="inline-flex items-center justify-center rounded-sm border border-[var(--border)] bg-panel/60 px-5 py-3 font-sans text-sm font-medium text-ink transition-colors hover:border-accent/40 hover:text-accent-hi focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
@@ -58,15 +74,12 @@ export function Hero() {
             href="/source"
             className="inline-flex items-center justify-center px-2 py-3 font-mono text-xs tracking-wide text-muted underline-offset-4 transition-colors hover:text-accent hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
-            Get source
+            Build notes
           </Link>
         </div>
 
         {/* Abstract outline lock motif (static SVG) */}
-        <div
-          className="mt-16 max-w-md opacity-90"
-          aria-hidden
-        >
+        <div className="mt-16 max-w-md opacity-90" aria-hidden>
           <svg
             viewBox="0 0 360 120"
             className="h-auto w-full text-accent"

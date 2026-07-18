@@ -75,15 +75,18 @@ Tune CSP after choosing analytics/form vendors — do not block demo mailto fall
 
 ## Soft-launch checklist
 
+**Default soft launch ships with no public download links.**  
+`example.com` (and non-HTTPS) hosts are not “live”: nav/footer/hero hide Download, primary CTA is **Request demo**, and `/download` shows an interim notice (no zip button). Wire real `NEXT_PUBLIC_DL_*` env vars to re-enable download CTAs without code changes.
+
 - [ ] Claim registry signed by product claim approver (`content/claims.ts`)
 - [ ] Media capturer named; pipeline stills at least placeholders reviewed
 - [ ] Hold remains **play-only** unless scrub QA passed (`docs/PERF.md`)
-- [ ] Real download URLs + SHA-256 (not `example.com`)
+- [ ] **No public download CTA** until real URLs + SHA-256 (not `example.com`) — or set `NEXT_PUBLIC_DL_*` when ready
 - [ ] Demo mailto / Formspree production destination
 - [ ] Privacy + terms legal review
 - [ ] Security headers live on host
 - [ ] HTTPS redirect + HSTS
-- [ ] Smoke: `/`, `/download`, `/source`, `/demo`, `/legal/privacy`
+- [ ] Smoke: `/` (hero → demo, no Download nav), `/source`, `/demo`, `/legal/privacy` (optional: `/download` interim page)
 - [ ] Keyboard + reduced-motion smoke (`docs/PERF.md`)
 - [ ] Optional: Lighthouse CI against preview URL (`lighthouserc.cjs`)
 - [ ] Unlisted preview URL or design-partner share list (public DNS optional)

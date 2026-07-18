@@ -9,7 +9,8 @@ import type { DownloadRef } from "./types";
  *
  * Production: set NEXT_PUBLIC_DL_RUNTIME_URL / NEXT_PUBLIC_DL_SOURCE_URL
  * (and optional SHA env vars) to immutable HTTPS release URLs.
- * Until then, example.com placeholders keep CTAs wired for soft launch.
+ * Soft launch ships with no public download links: example.com (and
+ * non-HTTPS) hosts are treated as not live — CTAs point to /demo instead.
  */
 
 function envUrl(name: string, fallback: string): string {
@@ -64,12 +65,6 @@ export const downloads: DownloadRef[] = [
 export const downloadsById: ReadonlyMap<DownloadRef["id"], DownloadRef> =
   new Map(downloads.map((d) => [d.id, d]));
 
-/** True when href is a non-placeholder external URL (not empty, not #). */
-export function isDownloadLive(href: string): boolean {
-  if (!href || href === "#") return false;
-  return /^https?:\/\//i.test(href);
-}
-
 /** True when host is still the example.com placeholder. */
 export function isPlaceholderHost(href: string): boolean {
   try {
@@ -77,4 +72,28 @@ export function isPlaceholderHost(href: string): boolean {
   } catch {
     return true;
   }
+}
+
+/**
+ * True when href is a real external release URL suitable for public CTAs.
+ * Placeholders (empty, #, example.com) are not live — soft launch has no
+ * download buttons until NEXT_PUBLIC_DL_* points at the real host.
+ */
+export function isDownloadLive(href: string): boolean {
+  if (!href || href === "#") return false;
+  if (!/^https:\/\//i.test(href)) return false;
+  if (isPlaceholderHost(href)) return false;
+  return true;
+}
+
+/** Public href for a download id, or null when soft-launch / not wired. */
+export function publicDownloadHref(id: DownloadRef["id"]): string | null {
+  const ref = downloadsById.get(id);
+  if (!ref || !isDownloadLive(ref.href)) return null;
+  return ref.href;
+}
+
+/** Runtime package is publicly downloadable (real host configured). */
+export function isRuntimeDownloadPublic(): boolean {
+  return publicDownloadHref("runtime") !== null;
 }
