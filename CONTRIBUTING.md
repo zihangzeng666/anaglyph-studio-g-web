@@ -25,11 +25,12 @@ npm install
 npm run dev
 npm run lint
 npm run typecheck
+npm test
 npm run build
 npm run preview   # static server for out/ after build (not next start)
 ```
 
-CI runs `npm ci`, `lint`, `typecheck`, and `build` on every push/PR.
+CI runs `npm ci`, `lint`, `typecheck`, `test`, and `build` on every push/PR.
 
 ## Pull requests
 
@@ -40,5 +41,6 @@ CI runs `npm ci`, `lint`, `typecheck`, and `build` on every push/PR.
 
 ## Claims & media
 
-- Claim registry lands in a later PR (`content/claims.ts`). No invented tolerances.
+- Claim registry: `content/claims.ts` (+ `FORBIDDEN_PHRASES`). Every chapter chip `claimId` must resolve — enforced by `content/__tests__/claims-map.test.ts`.
+- No invented tolerances; FOV guess is placeholder only; approx mm is not CMM uncertainty; never brand as Grok.
 - Media encode recipes and capture checklist land with the media/hold PR. Capturer role owns source footage quality.

@@ -34,6 +34,7 @@ npm install
 npm run dev        # http://localhost:3000
 npm run lint
 npm run typecheck
+npm test           # claim/chip registry unit tests (vitest)
 npm run build      # static export → out/
 npm run preview    # serve out/ (static only; no next start)
 ```
@@ -47,6 +48,7 @@ npm run preview    # serve out/ (static only; no next start)
 | `preview` | Static file server for `out/` after build |
 | `lint` | ESLint (next/core-web-vitals) |
 | `typecheck` | `tsc --noEmit` |
+| `test` | Vitest — chip `claimId` map + claim-safety checks |
 
 > This app uses **`output: 'export'`**. There is no `next start` server path; always preview via `build` + `preview`.
 
@@ -57,6 +59,8 @@ CSS stacks name Inter / Space Grotesk / IBM Plex Mono for intent, with system-ui
 ## Project layout
 
 ```text
+content/         # Typed marketing model (claims, chapters, sections, downloads)
+  __tests__/     # claims-map: every chip.claimId ∈ claims.ts
 src/
   app/           # App Router (layout, home shell, icon)
   components/    # BrandMark + future sections
