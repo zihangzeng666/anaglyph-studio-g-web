@@ -101,10 +101,11 @@ describe("downloads placeholders", () => {
     expect(source?.sha256).toMatch(/PLACEHOLDER|pending/i);
   });
 
-  it("does not point large zips into public/", () => {
+  it("wires external HTTPS hrefs (not public/ zips)", () => {
     for (const d of downloads) {
       expect(d.href.startsWith("/downloads/")).toBe(false);
       expect(d.href.includes("public/")).toBe(false);
+      expect(d.href).toMatch(/^https:\/\//i);
     }
   });
 });
