@@ -19,7 +19,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/setup.png",
-      alt: "Studio G Setup — case my_mould, AprilTag table, bicycle outline with landmarks",
+      alt: "Studio G Setup — case my_mould, tags, landmarks, bicycle outline (Build · PnP)",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -36,7 +36,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/tags.png",
-      alt: "Studio G Setup Tags — DICT_APRILTAG_36h11 with size_mm and landmark list",
+      alt: "Printable AprilTag sheet — IDs 1–5 at actual size (25–30 mm)",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -54,7 +54,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/camera-k.png",
-      alt: "Studio G Capture — live webcam feed for Build · PnP photo capture",
+      alt: "Studio G Start — open scene or Build · PnP with Camera path",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -72,7 +72,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/solve-cmm.png",
-      alt: "Studio G Capture & Solve — live camera view during Build · PnP",
+      alt: "PnP solve result — outline with landmarks and tag reproject metrics",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -89,7 +89,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/scene.png",
-      alt: "Studio G Scene — 3D outline preview with landmarks L1–L7",
+      alt: "3D scene preview — outline with axes and landmarks L1–L7",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -107,7 +107,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/track.png",
-      alt: "Studio G Track — live camera ready with outline, axes, and tags toggles",
+      alt: "Live AR track — carbon mould with locked CAD outline and AprilTag",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
