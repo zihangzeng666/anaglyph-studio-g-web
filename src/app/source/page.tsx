@@ -26,55 +26,57 @@ export default function SourcePage() {
         package measured per release.
       </p>
 
-      <dl className="rounded-sm border border-[var(--border)] bg-panel/50 p-5 font-mono text-sm text-ink">
-        <div className="flex flex-col gap-1 border-b border-[var(--border)] py-3 first:pt-0 sm:flex-row sm:justify-between">
-          <dt className="text-muted">Filename</dt>
-          <dd>{source?.filename ?? "—"}</dd>
-        </div>
-        <div className="flex flex-col gap-1 border-b border-[var(--border)] py-3 sm:flex-row sm:justify-between">
-          <dt className="text-muted">Size</dt>
-          <dd>{source?.sizeHint ?? "—"}</dd>
-        </div>
-        <div className="flex flex-col gap-1 border-b border-[var(--border)] py-3 sm:flex-row sm:justify-between">
-          <dt className="text-muted">Updated</dt>
-          <dd>{source?.updated ?? "—"}</dd>
-        </div>
-        <div className="flex flex-col gap-1 py-3 last:pb-0 sm:flex-row sm:justify-between">
-          <dt className="text-muted">SHA-256</dt>
-          <dd className="break-all text-xs text-muted">
-            {source?.sha256 ?? "—"}
-          </dd>
-        </div>
-      </dl>
-
       {live ? (
-        <p>
-          <a
-            href={href}
-            className="inline-flex rounded-sm border border-[var(--border)] bg-panel px-5 py-3 text-sm font-semibold text-ink hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-            rel={placeholder ? "nofollow" : undefined}
-          >
-            Download {source!.filename}
-          </a>
-        </p>
+        <>
+          <dl className="rounded-sm border border-[var(--border)] bg-panel/50 p-5 font-mono text-sm text-ink">
+            <div className="flex flex-col gap-1 border-b border-[var(--border)] py-3 first:pt-0 sm:flex-row sm:justify-between">
+              <dt className="text-muted">Filename</dt>
+              <dd>{source?.filename ?? "—"}</dd>
+            </div>
+            <div className="flex flex-col gap-1 border-b border-[var(--border)] py-3 sm:flex-row sm:justify-between">
+              <dt className="text-muted">Size</dt>
+              <dd>{source?.sizeHint ?? "—"}</dd>
+            </div>
+            <div className="flex flex-col gap-1 border-b border-[var(--border)] py-3 sm:flex-row sm:justify-between">
+              <dt className="text-muted">Updated</dt>
+              <dd>{source?.updated ?? "—"}</dd>
+            </div>
+            <div className="flex flex-col gap-1 py-3 last:pb-0 sm:flex-row sm:justify-between">
+              <dt className="text-muted">SHA-256</dt>
+              <dd className="break-all text-xs text-muted">
+                {source?.sha256 ?? "—"}
+              </dd>
+            </div>
+          </dl>
+
+          <p>
+            <a
+              href={href}
+              className="inline-flex rounded-sm border border-[var(--border)] bg-panel px-5 py-3 text-sm font-semibold text-ink hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Download {source!.filename}
+            </a>
+          </p>
+        </>
       ) : (
         <p className="rounded-sm border border-[var(--border)] bg-frame/40 px-4 py-3 text-sm">
-          Source package URL is a placeholder until the external host is wired.
-          See product <span className="font-mono text-ink">BUILD.md</span> in the
-          source tree for MSVC / OpenCV steps once you have the zip.
+          Public source zip is not listed on this soft launch
+          {placeholder
+            ? " (NEXT_PUBLIC_DL_SOURCE_URL still points at a placeholder host)."
+            : "."}{" "}
+          Use{" "}
+          <a
+            href="/demo"
+            className="text-accent underline-offset-2 hover:underline"
+          >
+            Request demo
+          </a>{" "}
+          for design-partner access. Build prerequisites below still apply once
+          you have the package; see product{" "}
+          <span className="font-mono text-ink">BUILD.md</span> in the source
+          tree.
         </p>
       )}
-
-      {placeholder && live ? (
-        <p className="rounded-sm border border-[var(--border)] bg-frame/30 px-4 py-3 text-sm text-muted">
-          Host URL is still an{" "}
-          <span className="font-mono text-ink">example.com</span> placeholder.
-          Set{" "}
-          <span className="font-mono text-ink">NEXT_PUBLIC_DL_SOURCE_URL</span>{" "}
-          to the real release host before public launch. No zip is stored in
-          this git repo.
-        </p>
-      ) : null}
 
       <section aria-labelledby="prereq-heading">
         <h2

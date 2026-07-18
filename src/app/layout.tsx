@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandMark } from "@/components/BrandMark";
+import { isRuntimeDownloadPublic } from "../../content/downloads";
 import { site } from "../../content/site";
 import "./globals.css";
 
@@ -43,7 +44,9 @@ export const metadata: Metadata = {
 const NAV = [
   { href: "/#pipeline", label: "Pipeline" },
   { href: "/#paths", label: "Paths" },
-  { href: "/download", label: "Download" },
+  ...(isRuntimeDownloadPublic()
+    ? ([{ href: "/download", label: "Download" }] as const)
+    : []),
   { href: "/source", label: "Source" },
   { href: "/demo", label: "Demo" },
 ];

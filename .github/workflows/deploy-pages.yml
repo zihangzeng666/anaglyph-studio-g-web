@@ -1,0 +1,54 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - execute-plan/86c03ae4-pr-11-content-freeze-production-deploy-security-header
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - name: Build static export
+        run: npm run build
+        env:
+          # Project Pages URL: https://<user>.github.io/anaglyph-studio-g-web/
+          GITHUB_PAGES: "true"
+      - name: Prepare publish dir
+        run: |
+          touch out/.nojekyll
+          # Optional security headers for hosts that honor _headers (Netlify-style);
+          # GitHub Pages ignores this file — documented in docs/DEPLOY.md.
+          if [ -f public/_headers ]; then cp public/_headers out/_headers; fi
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
