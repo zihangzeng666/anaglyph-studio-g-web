@@ -16,6 +16,8 @@
   --ok: #59b87a;
   --warn: #e0ad5a;
   --bad: #e05c57;
+  /* Brand faces named for intent; self-hosted / next/font land in polish PR.
+     Until then browsers use system fallbacks (Segoe UI, Cascadia, etc.). */
   --mono: "IBM Plex Mono", "Cascadia Code", ui-monospace, monospace;
   --sans: "Inter", "Segoe UI", system-ui, sans-serif;
   --display: "Space Grotesk", var(--sans);

@@ -35,6 +35,7 @@ npm run dev        # http://localhost:3000
 npm run lint
 npm run typecheck
 npm run build      # static export → out/
+npm run preview    # serve out/ (static only; no next start)
 ```
 
 ## Scripts
@@ -42,18 +43,25 @@ npm run build      # static export → out/
 | Script | Purpose |
 |--------|---------|
 | `dev` | Local Next.js dev server |
-| `build` | Production static export |
+| `build` | Production static export → `out/` |
+| `preview` | Static file server for `out/` after build |
 | `lint` | ESLint (next/core-web-vitals) |
 | `typecheck` | `tsc --noEmit` |
+
+> This app uses **`output: 'export'`**. There is no `next start` server path; always preview via `build` + `preview`.
+
+## Typography (scaffold)
+
+CSS stacks name Inter / Space Grotesk / IBM Plex Mono for intent, with system-ui / Cascadia / monospace fallbacks. **No self-hosted files or `next/font` yet** — `public/fonts/` is a stub. System fonts are intentional for PR1; load subsets (or `next/font`) in a polish PR to avoid FOUT/layout shift when brand faces ship.
 
 ## Project layout
 
 ```text
 src/
-  app/           # App Router (layout, home shell)
+  app/           # App Router (layout, home shell, icon)
   components/    # BrandMark + future sections
 public/
-  fonts/         # Self-hosted font subsets (stubs)
+  fonts/         # Self-hosted font subsets (stubs — system fallbacks until polish)
   media/         # Marketing media (later PRs)
 ```
 

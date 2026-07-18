@@ -1,15 +1,17 @@
 # Contributing — Anaglyph Studio (G) marketing site
 
-## Owners (name before PR1 merge)
+## Owners
 
 | Role | Name | Responsibility |
 |------|------|----------------|
-| **Eng owner** (scaffold + content model lead) | _Name before PR1 merge_ | Next.js scaffold, content model, CI, a11y baseline |
-| **Motion / media eng** | _Name before PR1 merge_ (or same solo eng) | GSAP chapters, path diagram, media encode pipeline |
-| **Product claim approver** | _Product owner — must sign claim registry before PR11 public_ | Approves every accuracy / capability claim in copy |
-| **Media capturer** | _Operator with Studio G + bicycle example; may be eng or PM_ | UI screenshots, tracking loops, print crops from real product |
+| **Eng owner** (scaffold + content model lead) | Interim solo eng (repo maintainer) | Next.js scaffold, content model, CI, a11y baseline |
+| **Motion / media eng** | Same as eng owner (interim solo) | GSAP chapters, path diagram, media encode pipeline |
+| **Product claim approver** | TBD — product owner | Approves every accuracy / capability claim in copy |
+| **Media capturer** | TBD — operator with Studio G + bicycle example (may be eng or PM) | UI screenshots, tracking loops, print crops from real product |
 
-Fill real names in this table before merging the scaffold PR (PR1). Claim registry sign-off is a hard gate before public launch (PR11).
+**Interim solo:** eng + motion are the same person until a second engineer is assigned. Replace “Interim solo eng” with a real name when ownership is formalized.
+
+**Hard gates:** claim approver and media capturer must be named and claim registry signed **before PR11 public launch**. Those roles may stay TBD through early scaffold/content PRs.
 
 ## Product naming
 
@@ -24,6 +26,7 @@ npm run dev
 npm run lint
 npm run typecheck
 npm run build
+npm run preview   # static server for out/ after build (not next start)
 ```
 
 CI runs `npm ci`, `lint`, `typecheck`, and `build` on every push/PR.

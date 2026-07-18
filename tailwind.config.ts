@@ -9,15 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "var(--bg)",
-        panel: "var(--panel)",
-        frame: "var(--frame)",
+        // color-mix + <alpha-value> so Tailwind opacity modifiers (e.g. bg-panel/80) emit CSS
+        bg: "color-mix(in srgb, var(--bg) calc(<alpha-value> * 100%), transparent)",
+        panel: "color-mix(in srgb, var(--panel) calc(<alpha-value> * 100%), transparent)",
+        frame: "color-mix(in srgb, var(--frame) calc(<alpha-value> * 100%), transparent)",
         accent: {
-          DEFAULT: "var(--accent)",
-          hi: "var(--accent-hi)",
+          DEFAULT:
+            "color-mix(in srgb, var(--accent) calc(<alpha-value> * 100%), transparent)",
+          hi: "color-mix(in srgb, var(--accent-hi) calc(<alpha-value> * 100%), transparent)",
         },
-        ink: "var(--text)",
-        muted: "var(--muted)",
+        ink: "color-mix(in srgb, var(--text) calc(<alpha-value> * 100%), transparent)",
+        muted:
+          "color-mix(in srgb, var(--muted) calc(<alpha-value> * 100%), transparent)",
       },
       fontFamily: {
         sans: ["var(--sans)"],

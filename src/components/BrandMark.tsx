@@ -6,12 +6,11 @@ type BrandMarkProps = {
  * Wordmark for Anaglyph Studio (G).
  * Product name is always "Anaglyph Studio (G)" — never "Grok".
  */
-export function BrandMark({ className = "" }: BrandMarkProps) {
+export function BrandMark({ className }: BrandMarkProps) {
+  const classes = ["flex flex-col gap-0.5", className].filter(Boolean).join(" ");
+
   return (
-    <div
-      className={`flex flex-col gap-0.5 ${className}`}
-      aria-label="Anaglyph Studio (G)"
-    >
+    <div className={classes} aria-label="Anaglyph Studio (G)">
       <span className="font-display text-sm font-semibold tracking-[0.28em] text-ink uppercase">
         ANAGLYPH
       </span>
