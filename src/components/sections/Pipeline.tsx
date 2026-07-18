@@ -1,6 +1,6 @@
-import Image from "next/image";
 import { chapters } from "../../../content/chapters";
 import { ChapterRail } from "@/components/ChapterRail";
+import { assetPath } from "@/lib/assetPath";
 
 /**
  * Pipeline: large card shots + sticky long-dwell stack.
@@ -98,15 +98,24 @@ export function Pipeline() {
                       minHeight: "min(56vh, 36rem)",
                     }}
                   >
-                    <Image
-                      src={chapter.media.src}
+                    {/*
+                      Use plain <img> + assetPath: next/image on static export
+                      does not always prefix basePath, so GH Pages served
+                      /media/... (404) instead of /anaglyph-studio-g-web/media/...
+                    */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={assetPath(chapter.media.src)}
                       alt={chapter.media.alt}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 75vw"
-                      className="object-cover object-top"
-                      priority={
+                      className="absolute inset-0 h-full w-full object-cover object-top"
+                      width={1920}
+                      height={1080}
+                      loading={
                         chapter.id === "setup" || chapter.id === "solve-cmm"
+                          ? "eager"
+                          : "lazy"
                       }
+                      decoding="async"
                     />
                   </div>
                   <figcaption
