@@ -79,18 +79,21 @@ ffmpeg -y -ss 00:00:01 -i track-source.mp4 -frames:v 1 -q:v 2 \
 
 Until assets land and mid-laptop QA passes (≥55 fps scrub, long tasks &lt;50 ms), ship **play-only**.
 
-## Pipeline stills
+## Pipeline stills (live captures 2026-07-18)
 
-Place claim-safe crops at paths referenced in `content/chapters.ts`:
+| Path | Source |
+|------|--------|
+| `pipeline/setup.png` | Setup · Build · PnP (case, tags, bicycle outline) |
+| `pipeline/tags.png` | Same Setup UI (AprilTag table + size_mm) |
+| `pipeline/camera-k.png` | Capture · live webcam 1280×720 |
+| `pipeline/solve-cmm.png` | PnP solve result (tags + outline) |
+| `pipeline/scene.png` | Scene · 3D outline + landmarks |
+| `pipeline/track.png` | Track · live camera ready |
+| `hold/track-poster.png` | Capture still |
+| `hero/poster.png` | Hero still |
+| `ui/home.png` | Home · Build · CMM |
 
-- `/media/pipeline/setup.png`
-- `/media/pipeline/tags.png`
-- `/media/pipeline/camera-k.png`
-- `/media/pipeline/solve-cmm.png`
-- `/media/pipeline/scene.png`
-- `/media/pipeline/track.png`
-
-### Capture from Studio G (real UI)
+### Capture from Studio G (scripted)
 
 ```powershell
 # Rebuild Studio G if src changed, then:

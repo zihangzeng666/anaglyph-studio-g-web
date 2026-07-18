@@ -2,8 +2,8 @@ import type { Chapter } from "./types";
 
 /**
  * Pipeline scroll chapters: Setup → Tags → Camera K → Solve/CMM → Scene → Track.
- * Media: industrial stills under public/media/pipeline (regenerate via
- * scripts/gen_media_placeholders.py). Hold scrub is section "hold", not scroll.
+ * Media: real Studio G UI captures under public/media/pipeline (2026-07-18).
+ * Hold scrub is section "hold", not scroll-driven.
  */
 export const chapters: Chapter[] = [
   {
@@ -19,7 +19,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/setup.png",
-      alt: "Studio G Setup page with case, tags, and outline fields",
+      alt: "Studio G Setup — case my_mould, AprilTag table, bicycle outline with landmarks",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -36,7 +36,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/tags.png",
-      alt: "Printable AprilTag sheet and ChArUco board crop",
+      alt: "Studio G Setup Tags — DICT_APRILTAG_36h11 with size_mm and landmark list",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -54,7 +54,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/camera-k.png",
-      alt: "Studio G Calibrate page — Measure K, not FOV as hero",
+      alt: "Studio G Capture — live webcam feed for Build · PnP photo capture",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -72,7 +72,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/solve-cmm.png",
-      alt: "Dual panel: PnP capture annotate versus Build from CMM",
+      alt: "Studio G Capture & Solve — live camera view during Build · PnP",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -89,7 +89,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/scene.png",
-      alt: "Studio G Scene page with 3D preview",
+      alt: "Studio G Scene — 3D outline preview with landmarks L1–L7",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -107,7 +107,7 @@ export const chapters: Chapter[] = [
     media: {
       type: "image",
       src: "/media/pipeline/track.png",
-      alt: "Live tracking with outline overlay and error readout",
+      alt: "Studio G Track — live camera ready with outline, axes, and tags toggles",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },

@@ -37,7 +37,7 @@ export function getHoldMode(): HoldMode {
 }
 
 export const HOLD_MEDIA = {
-  poster: "/media/hold/track-poster.jpg",
+  poster: "/media/hold/track-poster.png",
   webm: "/media/hold/track-scrub.webm",
   mp4: "/media/hold/track-scrub.mp4",
 } as const;
