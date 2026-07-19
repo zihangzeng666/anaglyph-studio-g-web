@@ -93,7 +93,7 @@ export const site: SiteConfig = {
   productName: "Anaglyph Studio (G)",
   shortName: "Studio G",
   tagline: "Lock the outline.",
-  lead: "An industrial desktop console for mould setup and live AR outline tracking. Build the scene from photos or CMM corners — or load one you trust and go straight to track.",
+  lead: "Windows console that puts your mould CAD outline on the live camera — AprilTags as handles, real camera K (not FOV guess), pose every frame, reprojection in pixels. Build a scene from multi-view photos or CMM corners, or load a scene JSON and go straight to track.",
   sections,
   chapters,
   workflows,

@@ -36,8 +36,8 @@ export function Hero() {
       aria-labelledby="hero-heading"
       className="relative overflow-hidden border-b border-[var(--border)]"
     >
-      {/* Live-track photo, dark and semi-transparent — the literal locked
-          outline sitting behind the words that name it. */}
+      {/* Live-track photo as a quiet premium ground — outline barely
+          suggested behind type, not a full-bleed product shot. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -46,16 +46,16 @@ export function Hero() {
           width={781}
           height={799}
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-center"
+          className="absolute inset-0 h-full w-full scale-[1.04] object-cover object-[72%_48%] opacity-[0.28] saturate-[0.55] contrast-[0.92] brightness-[0.72]"
         />
-        {/* Black scrim so the photo reads as ground, not content */}
-        <div className="absolute inset-0 bg-bg/40" />
-        {/* Dark on the left to hold the type; the mould emerges center-right */}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--bg)_0%,color-mix(in_srgb,var(--bg)_84%,transparent)_42%,color-mix(in_srgb,var(--bg)_44%,transparent)_72%,color-mix(in_srgb,var(--bg)_72%,transparent)_100%)]" />
-        {/* Melt into the header above and the ruler strip below */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--bg)_0%,transparent_22%,transparent_64%,var(--bg)_100%)]" />
-        {/* A low brass wash so the yellow outline feels lit, not flat */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_72%_60%,color-mix(in_srgb,var(--accent)_10%,transparent),transparent_70%)]" />
+        {/* Heavy scrim — photo is atmosphere, never competes with type */}
+        <div className="absolute inset-0 bg-bg/72" />
+        {/* Left plate for headline; mould ghost only on the far right */}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--bg)_0%,color-mix(in_srgb,var(--bg)_94%,transparent)_38%,color-mix(in_srgb,var(--bg)_70%,transparent)_68%,color-mix(in_srgb,var(--bg)_88%,transparent)_100%)]" />
+        {/* Soft vignette top/bottom */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--bg)_0%,transparent_18%,transparent_70%,var(--bg)_100%)]" />
+        {/* Barely-there brass wash */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_45%_40%_at_78%_58%,color-mix(in_srgb,var(--accent)_6%,transparent),transparent_72%)]" />
       </div>
 
       <HeroMotion>
@@ -126,17 +126,17 @@ export function Hero() {
               </Link>
             )}
             <a
-              href="#pipeline"
+              href="#paths"
               className="inline-flex items-center justify-center rounded-sm border border-[var(--border)] bg-panel/60 px-5 py-3 font-sans text-sm font-medium text-ink transition-colors hover:border-accent/40 hover:text-accent-hi focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
-              Explore the pipeline
+              Three paths in
             </a>
-            <Link
-              href="/source"
+            <a
+              href="#hold"
               className="inline-flex items-center justify-center px-2 py-3 font-mono text-xs tracking-wide text-muted underline-offset-4 transition-colors hover:text-accent hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
-              Build notes
-            </Link>
+              See live track
+            </a>
           </div>
         </div>
 

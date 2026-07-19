@@ -3,24 +3,22 @@
 import { useCallback, useId, useState } from "react";
 import { workflows } from "../../../content/site";
 import type { WorkflowId } from "../../../content/types";
+import {
+  scrollToChapter,
+  scrollToWorkflow,
+  scrollToWorkflowStep,
+  stepToChapter,
+  workflowEntryChapter,
+} from "@/lib/workflowLinks";
 
 /**
  * Interactive path diagram: Load · track / Build · PnP / Build · CMM.
- * SWAP PATH cycles highlight; keyboard accessible. Static SVG remains readable
- * without JS. Scroll-to-chapter hooks are stubs until the motion PR.
+ * - Tabs / Swap path only change highlight (no surprise scroll).
+ * - Clicking a step node jumps to the matching pipeline chapter.
+ * - Double-click path label / “Open path” goes to that workflow’s entry chapter.
  */
 
 const WORKFLOW_ORDER: WorkflowId[] = ["load-track", "build-pnp", "build-cmm"];
-
-/** Smooth-scroll to the pipeline chapter most relevant to the path. */
-export function scrollToWorkflow(id: WorkflowId): void {
-  const targetId =
-    id === "load-track" ? "track" : id === "build-cmm" ? "solve-cmm" : "solve-cmm";
-  const el = document.getElementById(targetId);
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-}
 
 function stepsForWorkflow(wf: (typeof workflows)[number]): string[] {
   if (wf.id === "load-track") {
@@ -35,20 +33,21 @@ export function PathDiagram() {
   const activeId = WORKFLOW_ORDER[activeIndex] ?? "load-track";
 
   const cycle = useCallback((delta: number) => {
-    setActiveIndex((i) => {
-      const next = (i + delta + WORKFLOW_ORDER.length) % WORKFLOW_ORDER.length;
-      scrollToWorkflow(WORKFLOW_ORDER[next]!);
-      return next;
-    });
+    // Highlight only — do not scroll (swap is for comparison, not navigation).
+    setActiveIndex(
+      (i) => (i + delta + WORKFLOW_ORDER.length) % WORKFLOW_ORDER.length,
+    );
   }, []);
 
   const select = useCallback((id: WorkflowId) => {
     const idx = WORKFLOW_ORDER.indexOf(id);
-    if (idx >= 0) {
-      setActiveIndex(idx);
-      scrollToWorkflow(id);
-    }
+    if (idx >= 0) setActiveIndex(idx);
   }, []);
+
+  const openPath = useCallback((id: WorkflowId) => {
+    select(id);
+    scrollToWorkflow(id);
+  }, [select]);
 
   const onKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -64,14 +63,18 @@ export function PathDiagram() {
       } else if (e.key === "End") {
         e.preventDefault();
         select("build-cmm");
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        openPath(activeId);
       }
     },
-    [cycle, select],
+    [cycle, select, openPath, activeId],
   );
 
   const titleId = `${baseId}-title`;
   const descId = `${baseId}-desc`;
   const liveId = `${baseId}-live`;
+  const entry = workflowEntryChapter(activeId);
 
   return (
     <div className="space-y-4">
@@ -81,23 +84,43 @@ export function PathDiagram() {
           <span className="text-accent">
             {workflows.find((w) => w.id === activeId)?.label ?? activeId}
           </span>
-        </p>
-        <button
-          type="button"
-          onClick={() => cycle(1)}
-          onKeyDown={onKeyDown}
-          className="inline-flex items-center gap-2 rounded-sm border border-accent/40 bg-frame px-4 py-2 font-mono text-xs tracking-[0.14em] text-accent uppercase transition-colors hover:border-accent hover:bg-accent/10 hover:text-accent-hi focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          aria-controls={liveId}
-          aria-label="Swap path — cycle through Load track, Build PnP, and Build CMM"
-        >
-          Swap path
-          <span aria-hidden className="text-muted">
-            ↻
+          <span className="text-muted">
+            {" "}
+            → pipeline{" "}
+            <button
+              type="button"
+              onClick={() => scrollToChapter(entry)}
+              className="text-accent underline-offset-2 hover:underline"
+            >
+              #{entry}
+            </button>
           </span>
-        </button>
+        </p>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => cycle(1)}
+            onKeyDown={onKeyDown}
+            className="inline-flex items-center gap-2 rounded-sm border border-[var(--border)] bg-frame px-4 py-2 font-mono text-xs tracking-[0.14em] text-muted uppercase transition-colors hover:border-accent/40 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            aria-controls={liveId}
+            aria-label="Swap path — cycle highlight only"
+          >
+            Swap path
+            <span aria-hidden className="text-muted">
+              ↻
+            </span>
+          </button>
+          <button
+            type="button"
+            onClick={() => openPath(activeId)}
+            className="inline-flex items-center gap-2 rounded-sm border border-accent/40 bg-accent/10 px-4 py-2 font-mono text-xs tracking-[0.14em] text-accent uppercase transition-colors hover:border-accent hover:bg-accent/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            aria-label={`Open path — jump to pipeline ${entry}`}
+          >
+            Open path
+          </button>
+        </div>
       </div>
 
-      {/* Workflow tablist for keyboard / screen-reader selection */}
       <div
         role="tablist"
         aria-label="Studio G workflows"
@@ -116,15 +139,19 @@ export function PathDiagram() {
               aria-controls={`${baseId}-panel-${wf.id}`}
               tabIndex={selected ? 0 : -1}
               onClick={() => select(wf.id)}
+              onDoubleClick={() => openPath(wf.id)}
+              title="Click to highlight · double-click to open path in pipeline"
               className={[
-                "rounded-sm border px-3 py-1.5 font-mono text-xs tracking-wide transition-colors",
+                "rounded-sm border px-3 py-1.5 font-mono text-xs tracking-wide transition-colors duration-200",
                 "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
                 selected
                   ? "border-accent bg-accent/15 text-accent"
                   : "border-[var(--border)] bg-panel/40 text-muted hover:border-accent/40 hover:text-accent",
               ].join(" ")}
             >
-              <span className="text-accent/70">{String(i + 1).padStart(2, "0")}</span>{" "}
+              <span className="text-accent/70">
+                {String(i + 1).padStart(2, "0")}
+              </span>{" "}
               {wf.label}
             </button>
           );
@@ -147,10 +174,9 @@ export function PathDiagram() {
           <desc id={descId}>
             Three workflows from Home: Load track with optional Calibrate; Build
             PnP through Capture and Scene; Build CMM through Scene without
-            Capture. Active path is highlighted.
+            Capture. Click a step to open the matching pipeline chapter.
           </desc>
 
-          {/* Home hub */}
           <rect
             x="16"
             y="118"
@@ -172,7 +198,6 @@ export function PathDiagram() {
             Home
           </text>
 
-          {/* Trunk lines */}
           <path
             d="M88 136 H120 M120 70 V210 M120 70 H160 M120 136 H160 M120 210 H160"
             stroke="color-mix(in srgb, var(--muted) 50%, transparent)"
@@ -198,7 +223,7 @@ export function PathDiagram() {
               <g
                 key={wf.id}
                 opacity={active ? 1 : 0.42}
-                style={{ transition: "opacity 0.2s ease" }}
+                style={{ transition: "opacity 0.35s ease" }}
               >
                 <text
                   x={startX}
@@ -207,6 +232,8 @@ export function PathDiagram() {
                   fontFamily="ui-monospace, monospace"
                   fontSize="10"
                   letterSpacing="0.06em"
+                  className="cursor-pointer"
+                  onClick={() => openPath(wf.id)}
                 >
                   {wf.label}
                   {active ? " · active" : ""}
@@ -215,10 +242,30 @@ export function PathDiagram() {
                   const x = startX + i * gap;
                   const optional =
                     step.endsWith("?") ||
-                    (wf.optionalSteps?.includes(step.replace("?", "")) ?? false);
+                    (wf.optionalSteps?.includes(step.replace("?", "")) ??
+                      false);
                   const label = step.replace("?", "");
+                  const chapter = stepToChapter(label);
                   return (
-                    <g key={`${wf.id}-${step}-${i}`}>
+                    <g
+                      key={`${wf.id}-${step}-${i}`}
+                      className="cursor-pointer"
+                      role="link"
+                      tabIndex={0}
+                      aria-label={`${label} — open pipeline ${chapter}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        select(wf.id);
+                        scrollToWorkflowStep(label);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          select(wf.id);
+                          scrollToWorkflowStep(label);
+                        }
+                      }}
+                    >
                       {i > 0 ? (
                         <line
                           x1={x - gap + 64}
@@ -280,10 +327,14 @@ export function PathDiagram() {
             fontFamily="ui-monospace, monospace"
             fontSize="9"
           >
-            * Calibrate optional on Load · track (dashed)
+            * Calibrate optional on Load · track · click a step → pipeline
+            chapter
           </text>
         </svg>
       </div>
     </div>
   );
 }
+
+// Re-export for Paths cards (single source of truth)
+export { scrollToWorkflow, scrollToWorkflowStep } from "@/lib/workflowLinks";
