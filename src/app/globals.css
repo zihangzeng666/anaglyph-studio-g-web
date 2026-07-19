@@ -130,43 +130,6 @@ dl dt {
   background-repeat: no-repeat;
 }
 
-/* Ruler strip: fine ticks with a major mark every 5th */
-.ruler-x {
-  height: 12px;
-  background:
-    repeating-linear-gradient(
-      90deg,
-      var(--grid-line) 0 1px,
-      transparent 1px 10px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--muted) 40%, transparent) 0 1px,
-      transparent 1px 50px
-    );
-  background-size:
-    100% 6px,
-    100% 12px;
-  background-position: bottom;
-  background-repeat: no-repeat;
-}
-
-/* Step ticker under the hero — one slow pass, seamless via duplicated track */
-.marquee {
-  overflow: hidden;
-}
-.marquee-track {
-  display: inline-flex;
-  white-space: nowrap;
-  animation: marquee 48s linear infinite;
-  will-change: transform;
-}
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 /* Ghost chapter numerals behind pipeline copy */
 .ghost-num {
   color: transparent;

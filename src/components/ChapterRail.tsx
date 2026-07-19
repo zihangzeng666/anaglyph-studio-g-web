@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Chapter } from "../../content/types";
 import {
   destroyMotion,
@@ -14,9 +14,8 @@ type ChapterRailProps = {
 };
 
 /**
- * Pipeline status chips + progress bar.
- * Parent provides sticky positioning so this stays visible while
- * scrolling all chapters (see Pipeline data-pipeline-sticky-scope).
+ * Pipeline chapter chips only (no progress bar).
+ * Sticky parent keeps this visible while scrolling chapters.
  */
 export function ChapterRail({
   chapters,
@@ -25,15 +24,7 @@ export function ChapterRail({
   const [activeId, setActiveId] = useState<string | null>(
     chapters[0]?.id ?? null,
   );
-  const [progress, setProgress] = useState(0);
   const [reduced, setReduced] = useState(false);
-
-  const activeIndex = useMemo(() => {
-    const i = chapters.findIndex((c) => c.id === activeId);
-    return i < 0 ? 0 : i;
-  }, [activeId, chapters]);
-
-  const pct = Math.round(Math.min(1, Math.max(0, progress)) * 100);
 
   useEffect(() => {
     setReduced(getPrefersReducedMotion());
@@ -49,10 +40,6 @@ export function ChapterRail({
       onActiveChange: (id) => {
         if (cancelled) return;
         if (id) setActiveId(id);
-      },
-      onPipelineProgress: (p) => {
-        if (cancelled) return;
-        setProgress(p);
       },
     });
 
@@ -71,7 +58,6 @@ export function ChapterRail({
     <nav
       aria-label="Pipeline chapters"
       data-reduced-motion={reduced ? "true" : "false"}
-      className="space-y-3"
     >
       <div className="flex flex-wrap gap-2">
         {chapters.map((chapter) => {
@@ -95,42 +81,6 @@ export function ChapterRail({
             </a>
           );
         })}
-      </div>
-
-      <div
-        className="space-y-1.5"
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={pct}
-        aria-label="Pipeline scroll progress"
-        aria-valuetext={`${pct} percent, step ${activeIndex + 1} of ${chapters.length}`}
-      >
-        <div className="flex items-baseline justify-between gap-3 font-mono text-[10px] tracking-wide text-muted uppercase">
-          <span>
-            Pipeline · {String(activeIndex + 1).padStart(2, "0")} /{" "}
-            {String(chapters.length).padStart(2, "0")}
-            {activeId ? (
-              <span className="text-accent">
-                {" "}
-                · {chapters.find((c) => c.id === activeId)?.title}
-              </span>
-            ) : null}
-          </span>
-          <span className="tabular-nums text-accent">{pct}%</span>
-        </div>
-
-        <div className="relative h-2 overflow-hidden rounded-full bg-frame ring-1 ring-[var(--border)]">
-          <div
-            className="absolute inset-y-0 left-0 rounded-full bg-accent transition-[width] duration-500 ease-out"
-            style={{ width: `${pct}%` }}
-          />
-          <div
-            className="pointer-events-none absolute top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-accent-hi shadow-[0_0_12px_color-mix(in_srgb,var(--accent)_80%,transparent)] transition-[left] duration-500 ease-out"
-            style={{ left: `max(0px, calc(${pct}% - 6px))` }}
-            aria-hidden
-          />
-        </div>
       </div>
     </nav>
   );

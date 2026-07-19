@@ -10,11 +10,7 @@ import { assetPath } from "@/lib/assetPath";
 
 /**
  * Hero — clean product open: black field, small ambient still, plain headline.
- * No theatrical outline-stroke wordmark; tagline is site.tagline.
  */
-
-const TICKER_CHUNK =
-  "Setup → Camera → Calibrate → Capture → Scene → Track · Load · track / Build · PnP / Build · CMM · ";
 
 export function Hero() {
   const runtime = downloadsById.get("runtime");
@@ -97,19 +93,6 @@ export function Hero() {
             >
               Live track demo
             </a>
-          </div>
-        </div>
-
-        <div data-hero-item className="relative">
-          <div aria-hidden className="ruler-x" />
-          <div
-            aria-hidden
-            className="marquee border-t border-[var(--border)] bg-panel/30"
-          >
-            <div className="marquee-track py-2.5 font-mono text-[11px] tracking-[0.18em] text-muted uppercase">
-              <span>{TICKER_CHUNK.repeat(3)}</span>
-              <span>{TICKER_CHUNK.repeat(3)}</span>
-            </div>
           </div>
         </div>
       </HeroMotion>
