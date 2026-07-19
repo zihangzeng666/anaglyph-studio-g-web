@@ -92,8 +92,8 @@ export const specs: SiteConfig["specs"] = [
 export const site: SiteConfig = {
   productName: "Anaglyph Studio (G)",
   shortName: "Studio G",
-  tagline: "Lock the outline.",
-  lead: "Windows console that puts your mould CAD outline on the live camera — AprilTags as handles, real camera K (not FOV guess), pose every frame, reprojection in pixels. Build a scene from multi-view photos or CMM corners, or load a scene JSON and go straight to track.",
+  tagline: "Live CAD outline on the mould.",
+  lead: "Anaglyph Studio (G) is a Windows console for industrial mould setup: printed AprilTags, real camera calibration (Measure K / Load K — not FOV guess), and a live CAD outline locked to the feed. Build the scene from multi-view photos or CMM corners, or load a scene and go straight to track. Error is shown as reprojection in pixels.",
   sections,
   chapters,
   workflows,

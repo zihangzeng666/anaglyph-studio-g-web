@@ -114,25 +114,43 @@ export function Pipeline() {
                       minHeight: "min(56vh, 36rem)",
                     }}
                   >
-                    {/*
-                      Use plain <img> + assetPath: next/image on static export
-                      does not always prefix basePath, so GH Pages served
-                      /media/... (404) instead of /anaglyph-studio-g-web/media/...
-                    */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={assetPath(chapter.media.src)}
-                      alt={chapter.media.alt}
-                      className="absolute inset-0 h-full w-full object-cover object-top"
-                      width={1920}
-                      height={1080}
-                      loading={
-                        chapter.id === "setup" || chapter.id === "solve-cmm"
-                          ? "eager"
-                          : "lazy"
-                      }
-                      decoding="async"
-                    />
+                    {chapter.media.type === "video" ? (
+                      <video
+                        className="absolute inset-0 h-full w-full object-cover object-top"
+                        playsInline
+                        muted
+                        loop
+                        autoPlay
+                        preload="metadata"
+                        poster={
+                          chapter.media.poster
+                            ? assetPath(chapter.media.poster)
+                            : undefined
+                        }
+                        aria-label={chapter.media.alt}
+                      >
+                        <source
+                          src={assetPath(chapter.media.src)}
+                          type="video/mp4"
+                        />
+                      </video>
+                    ) : (
+                      // Plain <img> + assetPath for GH Pages basePath
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={assetPath(chapter.media.src)}
+                        alt={chapter.media.alt}
+                        className="absolute inset-0 h-full w-full object-cover object-top"
+                        width={1920}
+                        height={1080}
+                        loading={
+                          chapter.id === "setup" || chapter.id === "solve-cmm"
+                            ? "eager"
+                            : "lazy"
+                        }
+                        decoding="async"
+                      />
+                    )}
                   </div>
                   <figcaption
                     data-chapter-caption

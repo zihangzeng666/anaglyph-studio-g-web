@@ -56,11 +56,12 @@ export const chapters: Chapter[] = [
       { label: "FOV = placeholder", claimId: "fov-placeholder" },
     ],
     media: {
-      type: "image",
-      src: "/media/pipeline/camera-k.png",
-      alt: "Studio G Start — open scene or Build · PnP with Camera path",
+      type: "video",
+      src: "/media/pipeline/camera-k.mp4",
+      poster: "/media/pipeline/camera-k.png",
+      alt: "Studio G Calibrate — Measure K / camera calibration in progress",
       caption:
-        "The Start screen — open a saved scene, or take the camera path into Build · PnP.",
+        "Calibrate with a real board — Measure K / Load K, not a FOV placeholder.",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },

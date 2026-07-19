@@ -95,7 +95,7 @@ describe("pipeline media paths", () => {
     const { chapters } = await import("../chapters");
     for (const ch of chapters) {
       expect(ch.media.src).toMatch(
-        /^\/media\/pipeline\/.+\.(svg|png|webp|jpg|jpeg)$/,
+        /^\/media\/pipeline\/.+\.(svg|png|webp|jpg|jpeg|mp4|webm)$/,
       );
     }
   });
