@@ -6,11 +6,25 @@ import {
   downloadsById,
 } from "../../../content/downloads";
 import { HeroMotion } from "@/components/HeroMotion";
+import { assetPath } from "@/lib/assetPath";
 
 /**
- * Hero — "Lock the outline." Claim-safe lead + primary CTAs.
- * Soft launch: Request demo (no public zip). GSAP entrance via HeroMotion.
+ * Hero — the drafting-room thesis. The tagline is set as a two-line plate:
+ * "LOCK THE / OUTLINE." where OUTLINE is a hollow stroked word inside
+ * registration brackets that snap in and read LOCKED — the product's core
+ * gesture, played in type. site.tagline stays the canonical copy for metadata.
  */
+
+const TICKER_CHUNK =
+  "Setup → Camera → Calibrate → Capture → Scene → Track · Load · track / Build · PnP / Build · CMM · ";
+
+const BRACKETS = [
+  "-left-[0.14em] -top-[0.1em] border-l-2 border-t-2",
+  "-right-[0.14em] -top-[0.1em] border-r-2 border-t-2",
+  "-left-[0.14em] -bottom-[0.02em] border-l-2 border-b-2",
+  "-right-[0.14em] -bottom-[0.02em] border-r-2 border-b-2",
+] as const;
+
 export function Hero() {
   const runtime = downloadsById.get("runtime");
   const downloadHref = publicDownloadHref("runtime");
@@ -22,20 +36,33 @@ export function Hero() {
       aria-labelledby="hero-heading"
       className="relative overflow-hidden border-b border-[var(--border)]"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_20%,color-mix(in_srgb,var(--accent)_12%,transparent),transparent_55%),radial-gradient(ellipse_at_80%_80%,color-mix(in_srgb,var(--frame)_80%,transparent),transparent_50%)]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"
-      />
+      {/* Live-track photo, dark and semi-transparent — the literal locked
+          outline sitting behind the words that name it. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={assetPath("/media/hero/track-hero.jpg")}
+          alt=""
+          width={781}
+          height={799}
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover object-center"
+        />
+        {/* Black scrim so the photo reads as ground, not content */}
+        <div className="absolute inset-0 bg-bg/40" />
+        {/* Dark on the left to hold the type; the mould emerges center-right */}
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--bg)_0%,color-mix(in_srgb,var(--bg)_84%,transparent)_42%,color-mix(in_srgb,var(--bg)_44%,transparent)_72%,color-mix(in_srgb,var(--bg)_72%,transparent)_100%)]" />
+        {/* Melt into the header above and the ruler strip below */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--bg)_0%,transparent_22%,transparent_64%,var(--bg)_100%)]" />
+        {/* A low brass wash so the yellow outline feels lit, not flat */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_72%_60%,color-mix(in_srgb,var(--accent)_10%,transparent),transparent_70%)]" />
+      </div>
 
       <HeroMotion>
-        <div className="relative mx-auto flex min-h-[78vh] max-w-6xl flex-col justify-center px-6 py-20 md:py-28">
+        <div className="relative mx-auto flex min-h-[82vh] max-w-6xl flex-col justify-center px-6 py-20 md:py-28">
           <p
             data-hero-item
-            className="mb-6 font-mono text-xs tracking-[0.28em] text-accent uppercase"
+            className="mb-8 font-mono text-xs tracking-[0.28em] text-accent uppercase"
           >
             {site.productName} · Windows
           </p>
@@ -43,14 +70,41 @@ export function Hero() {
           <h1
             data-hero-item
             id="hero-heading"
-            className="max-w-3xl font-display text-5xl font-semibold tracking-tight text-ink sm:text-6xl md:text-7xl"
+            aria-label={site.tagline}
+            className="font-display uppercase leading-[0.94] tracking-tight text-ink [font-stretch:125%]"
           >
-            {site.tagline}
+            <span aria-hidden className="block text-[clamp(2.9rem,8.6vw,7.25rem)] font-extrabold">
+              Lock the
+            </span>
+            <span
+              aria-hidden
+              className="relative mt-[0.06em] inline-block text-[clamp(2.9rem,8.6vw,7.25rem)] font-extrabold"
+            >
+              <span className="text-outline">Outline.</span>
+              {BRACKETS.map((pos) => (
+                <span
+                  key={pos}
+                  aria-hidden
+                  data-hero-bracket
+                  className={`absolute h-[0.26em] w-[0.26em] border-accent ${pos}`}
+                />
+              ))}
+              <span
+                data-hero-locked
+                className="absolute left-full top-[0.3em] ml-8 hidden items-center gap-2 font-mono text-xs font-medium tracking-[0.24em] text-accent uppercase sm:inline-flex"
+              >
+                <span
+                  aria-hidden
+                  className="h-1.5 w-1.5 rounded-full bg-[var(--ok)]"
+                />
+                Locked
+              </span>
+            </span>
           </h1>
 
           <p
             data-hero-item
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-muted md:text-xl"
+            className="mt-8 max-w-2xl text-lg leading-relaxed text-muted md:text-xl"
           >
             {site.lead}
           </p>
@@ -84,56 +138,19 @@ export function Hero() {
               Build notes
             </Link>
           </div>
+        </div>
 
+        {/* Instrument strip: ruler + slow step ticker */}
+        <div data-hero-item className="relative">
+          <div aria-hidden className="ruler-x" />
           <div
-            data-hero-motif
-            className="mt-16 max-w-md opacity-90"
             aria-hidden
+            className="marquee border-t border-[var(--border)] bg-panel/40"
           >
-            <svg
-              viewBox="0 0 360 120"
-              className="h-auto w-full text-accent"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="8"
-                y="18"
-                width="140"
-                height="84"
-                rx="4"
-                stroke="currentColor"
-                strokeOpacity="0.25"
-                strokeWidth="1.5"
-              />
-              <path
-                d="M28 72 L48 42 L72 58 L98 30 L128 66"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                strokeLinejoin="round"
-                strokeLinecap="round"
-              />
-              <circle cx="48" cy="42" r="3" fill="currentColor" />
-              <circle cx="72" cy="58" r="3" fill="currentColor" />
-              <circle cx="98" cy="30" r="3" fill="currentColor" />
-              <path
-                d="M180 40 H340 M180 60 H300 M180 80 H320"
-                stroke="currentColor"
-                strokeOpacity="0.2"
-                strokeWidth="1"
-              />
-              <text
-                x="180"
-                y="28"
-                fill="currentColor"
-                fillOpacity="0.55"
-                fontFamily="ui-monospace, monospace"
-                fontSize="10"
-                letterSpacing="0.12em"
-              >
-                OUTLINE · LOCK
-              </text>
-            </svg>
+            <div className="marquee-track py-2.5 font-mono text-[11px] tracking-[0.18em] text-muted uppercase">
+              <span>{TICKER_CHUNK.repeat(3)}</span>
+              <span>{TICKER_CHUNK.repeat(3)}</span>
+            </div>
           </div>
         </div>
       </HeroMotion>

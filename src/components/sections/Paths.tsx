@@ -18,12 +18,12 @@ export function Paths() {
       title="Pick a workflow. Follow the strip."
     >
       <p className="mb-10 max-w-2xl text-base leading-relaxed text-muted">
-        Product labels match Studio G exactly. On{" "}
-        <span className="font-mono text-ink">Load · track</span>, Calibrate is
-        optional (dashed). Use{" "}
-        <span className="font-mono text-ink">SWAP PATH</span> or the workflow
-        tabs — arrow keys cycle when a tab is focused. Click a card to jump into
-        the matching pipeline chapter.
+        These are the same labels you’ll meet in Studio G — nothing renamed for
+        marketing. Cycle with{" "}
+        <span className="font-mono text-ink">Swap path</span> or the tabs
+        (arrow keys work once a tab has focus); the dashed Calibrate node on{" "}
+        <span className="font-mono text-ink">Load · track</span> means
+        optional. Click a card to drop into that part of the pipeline.
       </p>
 
       <div className="mb-10">

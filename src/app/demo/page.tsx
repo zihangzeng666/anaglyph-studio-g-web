@@ -8,27 +8,26 @@ export const metadata: Metadata = {
   description: `Request a demo of ${site.productName} for mould setup and live outline tracking.`,
 };
 
+const demoInboxConfigured = Boolean(
+  process.env.NEXT_PUBLIC_DEMO_MAILTO || process.env.NEXT_PUBLIC_FORMSPREE_ID,
+);
+
 export default function DemoPage() {
   return (
     <UtilityPage title="Request a demo" eyebrow="Demo">
       <p>
-        Interested in {site.productName} for industrial mould setup and live AR
-        outline tracking? Tell us about your setup — we will schedule a
-        walkthrough of{" "}
+        Tell us a little about your setup — the moulds, the cameras, what you
+        need to see — and we’ll walk{" "}
         <span className="font-mono text-ink">Load · track</span>,{" "}
         <span className="font-mono text-ink">Build · PnP</span>, and{" "}
-        <span className="font-mono text-ink">Build · CMM</span>.
+        <span className="font-mono text-ink">Build · CMM</span> with{" "}
+        {site.shortName} on screen.
       </p>
 
       <DemoForm />
 
       <p className="text-sm text-muted">
-        Replace{" "}
-        <span className="font-mono text-ink">NEXT_PUBLIC_DEMO_MAILTO</span> or
-        set{" "}
-        <span className="font-mono text-ink">NEXT_PUBLIC_FORMSPREE_ID</span>{" "}
-        before public launch. We only use the details you submit to respond to
-        your inquiry — see{" "}
+        We use what you send only to reply — see{" "}
         <a
           href="/legal/privacy"
           className="text-accent underline-offset-2 hover:underline"
@@ -38,18 +37,25 @@ export default function DemoPage() {
         .
       </p>
 
+      {!demoInboxConfigured ? (
+        <p className="rounded-sm border border-dashed border-[var(--border)] px-4 py-3 font-mono text-[11px] leading-relaxed text-muted">
+          site note · demo inbox not configured — set NEXT_PUBLIC_DEMO_MAILTO
+          or NEXT_PUBLIC_FORMSPREE_ID before public launch
+        </p>
+      ) : null}
+
       <section aria-labelledby="demo-topics">
         <h2
           id="demo-topics"
           className="font-display text-xl font-semibold text-ink"
         >
-          What we typically cover
+          What a walkthrough covers
         </h2>
         <ul className="mt-3 list-disc space-y-1 pl-5 text-sm">
-          <li>Case setup, tags, and outline import</li>
-          <li>Camera K: Load / Measure / scene-embedded</li>
-          <li>Photo PnP vs CMM CSV build paths</li>
-          <li>Live track with outline lock and error readout (px / approx mm)</li>
+          <li>Case setup — tags, outline import, landmarks or CMM CSV</li>
+          <li>Camera K — Load, Measure, or scene-embedded</li>
+          <li>The two build paths, photo PnP and CMM corners, side by side</li>
+          <li>Live track — outline lock and the error readout (px, approx mm)</li>
         </ul>
       </section>
     </UtilityPage>

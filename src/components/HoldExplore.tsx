@@ -92,7 +92,10 @@ export function HoldExplore({ caption }: HoldExploreProps) {
               Media pending
             </span>
             <span className="mt-3 max-w-sm text-sm text-muted">
-              Tracking loop missing under public/media/hold.
+              The tracking loop hasn’t shipped with this build yet.
+            </span>
+            <span className="mt-2 font-mono text-[10px] text-muted/70">
+              public/media/hold
             </span>
           </div>
         )}
@@ -126,8 +129,8 @@ export function HoldExplore({ caption }: HoldExploreProps) {
 
       <p className="font-mono text-[11px] text-muted">
         {reduced
-          ? "Autoplay paused for reduced motion — use Play if you want the clip."
-          : "Looping demo clip. Mute by default for autoplay."}
+          ? "Reduced motion is on, so the clip waits for you — press Play when ready."
+          : "A recorded demo on loop — silent, so it can start on its own."}
       </p>
     </div>
   );

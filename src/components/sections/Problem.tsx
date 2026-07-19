@@ -47,11 +47,11 @@ export function Problem() {
           data-problem-lead
           className="mb-10 max-w-2xl text-sm leading-relaxed text-muted"
         >
-          PnP, CMM corners, and live outline lock are the same product stack —
-          not a hand-off from someone else’s tools. The change is{" "}
-          <span className="text-ink">how you drive them</span>: one console,
-          path cards, and readiness gates instead of ordering batch scripts
-          yourself.
+          The solver, the CMM corners, the live outline lock — same stack, same
+          author. What changed is{" "}
+          <span className="text-ink">how you drive it</span>: one console with
+          path cards and readiness gates, instead of a folder of scripts you
+          had to run in the right order.
         </p>
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -63,7 +63,8 @@ export function Problem() {
               Earlier form
             </h3>
             <p className="mb-4 text-sm text-muted">
-              Modular CLIs + numbered scripts — same pipeline, operator-ordered.
+              Modular CLIs and numbered scripts. The same pipeline — you kept
+              the order in your head.
             </p>
             <ol className="space-y-2 font-mono text-sm text-muted">
               {CLI_STEPS.map((step, i) => (
@@ -79,13 +80,13 @@ export function Problem() {
 
           <article
             data-problem-today
-            className="rounded-sm border border-accent/25 bg-frame/60 p-6 shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent)_8%,transparent)] will-change-transform"
+            className="plate rounded-sm border border-accent/25 bg-frame/60 p-6 shadow-[inset_0_0_0_1px_color-mix(in_srgb,var(--accent)_8%,transparent)] will-change-transform"
           >
             <h3 className="mb-1 font-mono text-xs tracking-[0.18em] text-accent uppercase">
               Studio G today
             </h3>
             <p className="mb-4 text-sm text-muted">
-              One window — Home path cards and a guided step strip.
+              One window. Pick a path on Home; the step strip keeps the order.
             </p>
             <div
               className="flex flex-wrap gap-2"
@@ -107,12 +108,12 @@ export function Problem() {
               ))}
             </div>
             <p className="mt-6 text-sm leading-relaxed text-muted">
-              On Home, pick{" "}
+              On Home you pick{" "}
               <span className="font-mono text-ink">Load · track</span>,{" "}
               <span className="font-mono text-ink">Build · PnP</span>, or{" "}
               <span className="font-mono text-ink">Build · CMM</span>. Readiness
-              gates sequence those same steps so you stay on the path without
-              hand-ordering the old script list.
+              gates open each step when the one before it is satisfied — the
+              order the scripts always wanted, now kept by the console.
             </p>
           </article>
         </div>

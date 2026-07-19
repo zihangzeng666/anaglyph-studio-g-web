@@ -162,21 +162,22 @@ export function DemoForm({
         </button>
         <p className="font-mono text-[11px] text-muted">
           {mode === "formspree"
-            ? "Submits via Formspree"
-            : `Opens mail to ${mailto}`}
+            ? "Delivered via Formspree"
+            : `Opens your mail app · ${mailto}`}
         </p>
       </div>
 
       {status === "sent" ? (
         <p className="text-sm text-[var(--ok)]" role="status">
           {mode === "mailto"
-            ? "Your mail client should open with a prefilled message."
-            : "Thanks — we received your request."}
+            ? "Your mail app should open with the message ready — hit send and you’re done."
+            : "Thanks — request received. We’ll get back to you soon."}
         </p>
       ) : null}
       {status === "error" ? (
         <p className="text-sm text-[var(--bad)]" role="alert">
-          Something went wrong. Try again or email {mailto} directly.
+          That didn’t send. Try again, or write to {mailto} directly — same
+          inbox either way.
         </p>
       ) : null}
     </form>

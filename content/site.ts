@@ -21,6 +21,16 @@ export const sections: SectionSlot[] = [
 ];
 
 /**
+ * Figure number for a section — sections read as numbered figures in a
+ * technical drawing ("Fig. 03"). Hero and footer carry no figure.
+ */
+export function sectionFigure(id: string): string | null {
+  if (id === "hero" || id === "footer") return null;
+  const i = sections.findIndex((s) => s.id === id);
+  return i > 0 ? String(i).padStart(2, "0") : null;
+}
+
+/**
  * Three product workflows — labels match Studio G UI exactly.
  * Load · track: Calibrate (K) is optional (dashed node on path diagram).
  */
@@ -83,7 +93,7 @@ export const site: SiteConfig = {
   productName: "Anaglyph Studio (G)",
   shortName: "Studio G",
   tagline: "Lock the outline.",
-  lead: "An industrial desktop console for mould setup and live AR outline tracking — Build with photos or CMM, or load a scene and track.",
+  lead: "An industrial desktop console for mould setup and live AR outline tracking. Build the scene from photos or CMM corners — or load one you trust and go straight to track.",
   sections,
   chapters,
   workflows,

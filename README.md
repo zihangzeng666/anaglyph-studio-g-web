@@ -4,6 +4,10 @@ Premium product marketing site for **Anaglyph Studio (G)** — a Windows desktop
 
 > Product name is **Anaglyph Studio (G)** only. Never brand this site as “Grok.”
 
+## Content collaboration
+
+Site structure, copy, and every media slot live in [SITE_BLUEPRINT.md](./SITE_BLUEPRINT.md) (human-editable). New captures go into [media-inbox/](./media-inbox/README.md) using the slot filenames — Claude encodes, wires, and updates the site from there. Lost in the repo? [REPO_MAP.md](./REPO_MAP.md) (中文) explains what every folder does and which ones you can ignore.
+
 ## Stack
 
 | Layer | Choice |

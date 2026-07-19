@@ -26,8 +26,9 @@ export default function DownloadPage() {
   return (
     <UtilityPage title="Download Studio_G" eyebrow="Download">
       <p>
-        Ready-to-run Windows console for mould setup and live AR outline
-        tracking. Package sizes are measured per release — not estimates.
+        The ready-to-run Windows console for mould setup and live AR outline
+        tracking. Package sizes are measured from the zip itself, release by
+        release — never estimated.
       </p>
 
       {live ? (
@@ -63,19 +64,25 @@ export default function DownloadPage() {
           </p>
         </>
       ) : (
-        <p className="rounded-sm border border-[var(--border)] bg-frame/40 px-4 py-3 text-sm">
-          Public download is not available on this soft launch. Use{" "}
-          <a
-            href="/demo"
-            className="text-accent underline-offset-2 hover:underline"
-          >
-            Request demo
-          </a>{" "}
-          for design-partner access. No zip is stored in this git repo
-          {placeholder
-            ? "; release host env (NEXT_PUBLIC_DL_RUNTIME_URL) is still a placeholder."
-            : "."}
-        </p>
+        <>
+          <p className="rounded-sm border border-[var(--border)] bg-frame/40 px-4 py-3 text-sm">
+            Downloads aren’t public during this soft launch —{" "}
+            <a
+              href="/demo"
+              className="text-accent underline-offset-2 hover:underline"
+            >
+              request a demo
+            </a>{" "}
+            for design-partner access. When they open, each package will list
+            its measured size and SHA-256 right here.
+          </p>
+          {placeholder ? (
+            <p className="rounded-sm border border-dashed border-[var(--border)] px-4 py-3 font-mono text-[11px] leading-relaxed text-muted">
+              site note · release host not configured —
+              NEXT_PUBLIC_DL_RUNTIME_URL still points at a placeholder
+            </p>
+          ) : null}
+        </>
       )}
 
       <section aria-labelledby="sysreq-heading">
@@ -101,12 +108,13 @@ export default function DownloadPage() {
           SmartScreen note
         </h2>
         <p className="mt-3 text-sm leading-relaxed">
-          Windows 10/11 x64 · ready-to-run zip ·{" "}
+          The zip is unsigned for now, so{" "}
           <strong className="font-medium text-ink">
-            SmartScreen may warn on unsigned builds
+            SmartScreen may warn on first run
           </strong>
-          . Prefer the published SHA-256 over “looks fine” heuristics. Source
-          builds and code-signing policy are covered on the{" "}
+          . Verify the published SHA-256 instead of trusting “looks fine” —
+          the hash is the check that matters. Building from source is covered
+          on the{" "}
           <a
             href="/source"
             className="text-accent underline-offset-2 hover:underline"

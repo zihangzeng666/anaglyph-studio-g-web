@@ -10,7 +10,7 @@ export const chapters: Chapter[] = [
     id: "setup",
     index: "01",
     title: "Setup",
-    body: "Name the case, define tags (id + size_mm), load the CAD outline, and attach landmarks for PnP or a CMM CSV for measured corners.",
+    body: "Every job starts as a case. Name it, list the tags (id + size_mm), load the CAD outline, then attach landmarks for PnP — or a CMM CSV of measured corners.",
     chips: [
       { label: "Case + tags", claimId: "setup-case" },
       { label: "Outline", claimId: "setup-case" },
@@ -20,6 +20,8 @@ export const chapters: Chapter[] = [
       type: "image",
       src: "/media/pipeline/setup.png",
       alt: "Studio G Setup — case my_mould, tags, landmarks, bicycle outline (Build · PnP)",
+      caption:
+        "Case my_mould in Setup — tags, landmarks, and the bicycle outline, ready for Build · PnP.",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -27,7 +29,7 @@ export const chapters: Chapter[] = [
     id: "tags",
     index: "02",
     title: "Tags",
-    body: "Print AprilTag sticker sheets and a ChArUco calibration board at actual size so physical markers match the case definition.",
+    body: "Print AprilTag sticker sheets and a ChArUco board at actual size — 100% scale, never fit-to-page — so the markers on the mould measure exactly what the case says they do.",
     chips: [
       { label: "Actual-size print", claimId: "print-tags-actual-size" },
       { label: "AprilTag sheets", claimId: "apriltag-dict" },
@@ -37,6 +39,8 @@ export const chapters: Chapter[] = [
       type: "image",
       src: "/media/pipeline/tags.png",
       alt: "Printable AprilTag sheet — IDs 1–5 at actual size (25–30 mm)",
+      caption:
+        "One sheet, IDs 1–5 at 25–30 mm — printed at 100%, applied straight to the mould.",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -44,7 +48,7 @@ export const chapters: Chapter[] = [
     id: "camera-k",
     index: "03",
     title: "Camera K",
-    body: "Load K or Measure K for real camera intrinsics; scene-embedded K is also supported. FOV guess is a placeholder only — not a real calibration.",
+    body: "Real intrinsics come from Load K or Measure K; a saved scene can carry its own. The FOV guess stays what it says it is — a placeholder, not a real calibration.",
     chips: [
       { label: "Load K", claimId: "load-k" },
       { label: "Measure K", claimId: "measure-k" },
@@ -55,6 +59,8 @@ export const chapters: Chapter[] = [
       type: "image",
       src: "/media/pipeline/camera-k.png",
       alt: "Studio G Start — open scene or Build · PnP with Camera path",
+      caption:
+        "The Start screen — open a saved scene, or take the camera path into Build · PnP.",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -62,7 +68,7 @@ export const chapters: Chapter[] = [
     id: "solve-cmm",
     index: "04",
     title: "Solve / CMM",
-    body: "Branch by workflow: Capture · annotate · solve for Build · PnP, or skip photo capture and build from CMM-measured tag corners.",
+    body: "Here the paths part. Build · PnP shoots the mould, annotates landmarks, and solves multi-view PnP; Build · CMM skips photo capture entirely and builds from measured tag corners.",
     chips: [
       { label: "Build · PnP", claimId: "workflow-build-pnp" },
       { label: "Capture → solve", claimId: "solve-pnp" },
@@ -73,6 +79,8 @@ export const chapters: Chapter[] = [
       type: "image",
       src: "/media/pipeline/solve-cmm.png",
       alt: "PnP solve result — outline with landmarks and tag reproject metrics",
+      caption:
+        "A solve, landed — the outline over its landmarks, per-tag reprojection in the margin.",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -80,7 +88,7 @@ export const chapters: Chapter[] = [
     id: "scene",
     index: "05",
     title: "Scene",
-    body: "Scene JSON packages outline, tags, and intrinsics for 3D preview. Optional CMM compare tools check measured ground truth — not a live accuracy certificate.",
+    body: "One scene JSON carries the outline, tags, and intrinsics — turn it over in 3D before you commit. CMM compare checks against measured ground truth; a check, not a live accuracy certificate.",
     chips: [
       { label: "Scene JSON", claimId: "scene-json" },
       { label: "3D preview", claimId: "scene-json" },
@@ -90,6 +98,8 @@ export const chapters: Chapter[] = [
       type: "image",
       src: "/media/pipeline/scene.png",
       alt: "3D scene preview — outline with axes and landmarks L1–L7",
+      caption:
+        "The scene in 3D — outline, axes, landmarks L1–L7 — one last look before tracking.",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },
@@ -97,7 +107,7 @@ export const chapters: Chapter[] = [
     id: "track",
     index: "06",
     title: "Track",
-    body: "Live tag detection locks the CAD outline on the mould. Error readout is reprojection in pixels, with optional approximate mm at estimated depth.",
+    body: "Tags found, outline locked — live on the mould. Error reads as reprojection in pixels; approx mm at estimated depth is there when you want it, and it says approx.",
     chips: [
       { label: "Live outline lock", claimId: "live-outline-lock" },
       { label: "err px", claimId: "err-px" },
@@ -108,6 +118,7 @@ export const chapters: Chapter[] = [
       type: "image",
       src: "/media/pipeline/track.png",
       alt: "Live AR track — carbon mould with locked CAD outline and AprilTag",
+      caption: "Live on the carbon mould — outline locked, tag in view.",
     },
     motion: { scrollVh: 200, pin: true, mediaMode: "crossfade" },
   },

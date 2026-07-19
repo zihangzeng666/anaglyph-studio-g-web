@@ -21,6 +21,9 @@
 # raw capture dumps (debug only — not for site publish)
 /public/media/_raw_captures/
 
+# local agent / IDE
+.claude/
+
 # misc
 .DS_Store
 *.pem

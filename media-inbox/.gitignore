@@ -1,0 +1,4 @@
+# Raw drops stay local — Claude encodes/moves keepers into public/media/.
+*
+!.gitignore
+!README.md

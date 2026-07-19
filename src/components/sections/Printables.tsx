@@ -1,4 +1,5 @@
 import { getClaim } from "../../../content/claims";
+import { TagMark } from "@/components/TagMark";
 import { SectionShell } from "./SectionShell";
 
 /**
@@ -13,6 +14,7 @@ export function Printables() {
   const cards = [
     {
       title: "AprilTag sticker sheets",
+      seed: 3,
       body:
         print?.statement ??
         "Print-ready AprilTag sticker sheets at actual size.",
@@ -25,6 +27,7 @@ export function Printables() {
     },
     {
       title: "ChArUco calibration board",
+      seed: 17,
       body:
         measure?.statement ??
         "Measure K — ChArUco board calibration for real camera intrinsics.",
@@ -44,10 +47,10 @@ export function Printables() {
       title="Markers you can print"
     >
       <p className="mb-8 max-w-2xl text-base leading-relaxed text-muted">
-        Stickers and boards leave the Studio ready for the shop floor — actual
-        size, not scaled screenshots. Physical tag size must match the case{" "}
-        <span className="font-mono text-ink">size_mm</span> fields so PnP and
-        live lock stay consistent.
+        Sheets leave the Studio print-ready for the shop floor — actual size,
+        never fit-to-page. The tag on the mould has to measure what the case{" "}
+        <span className="font-mono text-ink">size_mm</span> says it does, or
+        PnP and the live lock will quietly disagree.
       </p>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -57,19 +60,10 @@ export function Printables() {
             className="flex flex-col rounded-sm border border-[var(--border)] bg-panel/50 p-6"
           >
             <div
-              className="mb-5 flex h-28 items-center justify-center rounded-sm border border-dashed border-accent/25 bg-bg/60"
+              className="mb-5 flex h-28 items-center justify-center rounded-sm border border-dashed border-accent/25 bg-bg/60 text-accent/70"
               aria-hidden
             >
-              <svg
-                viewBox="0 0 64 64"
-                className="h-12 w-12 text-accent/70"
-                fill="currentColor"
-              >
-                <rect x="4" y="4" width="24" height="24" />
-                <rect x="36" y="4" width="24" height="24" opacity="0.35" />
-                <rect x="4" y="36" width="24" height="24" opacity="0.35" />
-                <rect x="36" y="36" width="24" height="24" />
-              </svg>
+              <TagMark size={76} seed={card.seed} />
             </div>
             <h3 className="font-display text-lg font-semibold text-ink">
               {card.title}

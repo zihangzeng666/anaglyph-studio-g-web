@@ -1,4 +1,5 @@
 import { chapters } from "../../../content/chapters";
+import { sectionFigure } from "../../../content/site";
 import { ChapterRail } from "@/components/ChapterRail";
 import { assetPath } from "@/lib/assetPath";
 
@@ -15,19 +16,26 @@ export function Pipeline() {
       className="scroll-mt-20 border-t border-[var(--border)]"
     >
       <div className="mx-auto max-w-6xl px-6 pt-16 md:pt-24">
-        <header className="mb-8 max-w-3xl">
-          <p className="mb-3 font-mono text-xs tracking-[0.22em] text-accent uppercase">
-            Pipeline
+        <header className="mb-8">
+          <p className="mb-4 flex items-baseline gap-4 font-mono text-xs tracking-[0.22em] uppercase">
+            <span className="shrink-0 text-accent">
+              Fig. {sectionFigure("pipeline")}
+            </span>
+            <span className="shrink-0 text-muted">Pipeline</span>
+            <span
+              aria-hidden
+              className="h-px flex-1 translate-y-[-0.2em] bg-[var(--border)]"
+            />
           </p>
           <h2
             id="pipeline-heading"
-            className="font-display text-3xl font-semibold tracking-tight text-ink md:text-4xl"
+            className="max-w-3xl font-display text-3xl font-bold tracking-tight text-ink md:text-4xl"
           >
             Explore the pipeline
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-            Six chapters from case setup to live outline lock. Jump any step via
-            the rail, or scroll the stack.
+            Six chapters, from naming a case to watching the outline lock on.
+            Use the rail to jump ahead, or let the scroll carry you through.
           </p>
         </header>
       </div>
@@ -54,20 +62,28 @@ export function Pipeline() {
                 id={chapter.id}
                 data-chapter-id={chapter.id}
                 data-media-mode={chapter.motion.mediaMode}
-                className="chapter-card scroll-mt-40 mb-6 grid gap-6 rounded-sm border border-[var(--border)] bg-panel/50 p-5 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-[2px] md:mb-8 md:grid-cols-12 md:items-stretch md:gap-8 md:p-8"
+                className="chapter-card plate scroll-mt-40 mb-6 grid gap-6 overflow-hidden rounded-sm border border-[var(--border)] bg-panel/50 p-5 shadow-[0_24px_60px_rgba(0,0,0,0.35)] backdrop-blur-[2px] md:mb-8 md:grid-cols-12 md:items-stretch md:gap-8 md:p-8"
                 aria-labelledby={`${chapter.id}-title`}
               >
                 <div
                   data-chapter-copy
                   className="flex flex-col justify-center md:col-span-4 lg:col-span-3"
                 >
-                  <p className="font-mono text-xs tracking-[0.2em] text-accent uppercase">
-                    {chapter.index} /{" "}
+                  <p className="sr-only">
+                    Chapter {chapter.index} of{" "}
                     {String(chapters.length).padStart(2, "0")}
                   </p>
+                  <div aria-hidden className="flex items-start gap-3">
+                    <span className="ghost-num -ml-1 font-display text-[4.5rem] leading-[0.85] font-black [font-stretch:125%] md:text-[6.5rem]">
+                      {chapter.index}
+                    </span>
+                    <span className="mt-2 font-mono text-[11px] tracking-[0.2em] text-accent">
+                      / {String(chapters.length).padStart(2, "0")}
+                    </span>
+                  </div>
                   <h3
                     id={`${chapter.id}-title`}
-                    className="mt-2 font-display text-2xl font-semibold text-ink md:text-3xl"
+                    className="mt-3 font-display text-2xl font-bold text-ink md:text-3xl"
                   >
                     {chapter.title}
                   </h3>
@@ -122,7 +138,7 @@ export function Pipeline() {
                     data-chapter-caption
                     className="mt-3 font-mono text-[11px] text-muted"
                   >
-                    {chapter.media.alt}
+                    {chapter.media.caption ?? chapter.media.alt}
                   </figcaption>
                 </figure>
               </article>

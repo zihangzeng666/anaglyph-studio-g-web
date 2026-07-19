@@ -55,6 +55,8 @@ export interface ChapterMedia {
   src: string;
   poster?: string;
   alt: string;
+  /** Visible figcaption, written for reading; alt remains the literal description */
+  caption?: string;
 }
 
 export interface ChapterMotion {

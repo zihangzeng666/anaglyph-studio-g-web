@@ -9,16 +9,15 @@ export function Specs() {
   return (
     <SectionShell id="specs" eyebrow="Specs" title="Stack & capabilities">
       <p className="view-reveal mb-4 max-w-2xl text-base leading-relaxed text-muted">
-        Product-true rows only — no invented tolerances. Packaging sizes are
-        measured per release; re-check{" "}
-        <span className="font-mono text-ink">sizeHint</span> when a new zip
-        lands.
+        Every row below is product-true — nothing rounded up, no invented
+        tolerances. Package sizes are measured from the actual zips, release by
+        release.
       </p>
       <p className="view-reveal view-reveal-delay-1 mb-8 max-w-2xl text-sm leading-relaxed text-muted">
-        Vision stack is OpenCV 4.11 with printable AprilTags and ChArUco for
-        real camera K. Build with photo PnP, CMM CSV corners, or load an
-        existing scene — then track live with reprojection error in pixels
-        (optional approx mm at depth).
+        Under the panel: OpenCV 4.11, printable AprilTags, and ChArUco for real
+        camera K. Build from photo PnP or CMM CSV corners — or load a scene —
+        then track with reprojection error in pixels, approx mm at depth if you
+        ask for it.
       </p>
 
       <dl className="view-reveal view-reveal-delay-2 grid gap-px overflow-hidden rounded-sm border border-[var(--border)] bg-[var(--border)] sm:grid-cols-2">
@@ -42,9 +41,9 @@ export function Specs() {
           Calibration note
         </p>
         <p className="mt-2 leading-relaxed">
-          Load K or Measure K for real intrinsics. Scene-embedded K is
-          supported. FOV guess is an explicit non-calibrated placeholder only —
-          never marketed as a real calibration.
+          Real intrinsics come from Load K or Measure K; a saved scene can
+          carry its own. The FOV guess is exactly what it sounds like — a
+          placeholder, never a calibration.
         </p>
       </aside>
     </SectionShell>

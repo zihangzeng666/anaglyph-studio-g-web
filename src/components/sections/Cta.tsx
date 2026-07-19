@@ -26,8 +26,8 @@ export function Cta() {
     >
       <p className="mb-10 max-w-2xl text-base leading-relaxed text-muted">
         {downloadPublic
-          ? "Ready-to-run Windows console or full source with OpenCV build pointers. Packages are hosted externally (checksum + size on each download page). SmartScreen may warn on unsigned builds."
-          : "Public runtime packages are not listed yet. Request a demo for design-partner access, or review source build notes. Packages will ship with checksum + size when the release host is wired."}
+          ? "A ready-to-run Windows console, or full source with OpenCV build pointers. Every package lists its measured size and SHA-256 on the download page; SmartScreen may warn on unsigned builds."
+          : "Runtime packages aren’t public yet. Request a demo for design-partner access, or read the source build notes — when downloads open, every package will list a measured size and a SHA-256 you can check."}
       </p>
 
       <div
@@ -76,8 +76,8 @@ export function Cta() {
             Request a demo
           </h3>
           <p className="mt-2 flex-1 text-sm text-muted">
-            Talk through mould setup and live outline tracking with{" "}
-            {site.shortName}.
+            Bring your mould and your cameras — we’ll walk the three paths with{" "}
+            {site.shortName} on screen.
           </p>
           <Link
             href="/demo"

@@ -21,9 +21,9 @@ export default function SourcePage() {
   return (
     <UtilityPage title="Get source" eyebrow="Source">
       <p>
-        Source zip with build pointers for OpenCV and optional industrial camera
-        SDKs. Not a monorepo with the private product tree — a shareable build
-        package measured per release.
+        A source zip with build pointers for OpenCV and the optional industrial
+        camera SDKs. This is the shareable build package, measured per release
+        — not the private product tree.
       </p>
 
       {live ? (
@@ -59,23 +59,27 @@ export default function SourcePage() {
           </p>
         </>
       ) : (
-        <p className="rounded-sm border border-[var(--border)] bg-frame/40 px-4 py-3 text-sm">
-          Public source zip is not listed on this soft launch
-          {placeholder
-            ? " (NEXT_PUBLIC_DL_SOURCE_URL still points at a placeholder host)."
-            : "."}{" "}
-          Use{" "}
-          <a
-            href="/demo"
-            className="text-accent underline-offset-2 hover:underline"
-          >
-            Request demo
-          </a>{" "}
-          for design-partner access. Build prerequisites below still apply once
-          you have the package; see product{" "}
-          <span className="font-mono text-ink">BUILD.md</span> in the source
-          tree.
-        </p>
+        <>
+          <p className="rounded-sm border border-[var(--border)] bg-frame/40 px-4 py-3 text-sm">
+            The source zip isn’t listed during this soft launch —{" "}
+            <a
+              href="/demo"
+              className="text-accent underline-offset-2 hover:underline"
+            >
+              request a demo
+            </a>{" "}
+            for design-partner access. Once you have the package, the
+            prerequisites below apply; the full walkthrough is{" "}
+            <span className="font-mono text-ink">BUILD.md</span> in the source
+            tree.
+          </p>
+          {placeholder ? (
+            <p className="rounded-sm border border-dashed border-[var(--border)] px-4 py-3 font-mono text-[11px] leading-relaxed text-muted">
+              site note · release host not configured — NEXT_PUBLIC_DL_SOURCE_URL
+              still points at a placeholder
+            </p>
+          ) : null}
+        </>
       )}
 
       <section aria-labelledby="prereq-heading">
@@ -115,10 +119,9 @@ export default function SourcePage() {
           SmartScreen note
         </h2>
         <p className="mt-3 text-sm leading-relaxed">
-          Built binaries from source may trigger Windows SmartScreen when
-          unsigned. Prefer verifying the published SHA-256 for official
-          packages. Code-signing is a product release decision, not a marketing
-          site concern.
+          Binaries you build yourself are unsigned, so Windows SmartScreen may
+          warn on first run. For official packages, verify the published
+          SHA-256 — that’s the check that matters.
         </p>
       </section>
     </UtilityPage>

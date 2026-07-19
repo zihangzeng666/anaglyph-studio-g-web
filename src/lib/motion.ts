@@ -152,12 +152,28 @@ export async function registerChapters(
 
   if (prefersReducedMotion()) {
     if (stack) {
+      let reducedActiveId: string | null = null;
       const onScroll = () => {
         const rect = stack.getBoundingClientRect();
         const view = window.innerHeight || 1;
         const total = Math.max(1, rect.height);
         const traveled = Math.min(total, Math.max(0, -rect.top + view * 0.35));
         onPipelineProgress?.(traveled / total);
+
+        // Rail label + tab highlight must still follow the visible chapter
+        let currentId: string | null = list[0]?.id ?? null;
+        for (const chapter of list) {
+          const el = root.querySelector<HTMLElement>(
+            `[data-chapter-id="${chapter.id}"]`,
+          );
+          if (el && el.getBoundingClientRect().top <= view * 0.45) {
+            currentId = chapter.id;
+          }
+        }
+        if (currentId && currentId !== reducedActiveId) {
+          reducedActiveId = currentId;
+          onActiveChange?.(currentId, 0);
+        }
       };
       window.addEventListener("scroll", onScroll, { passive: true });
       onScroll();

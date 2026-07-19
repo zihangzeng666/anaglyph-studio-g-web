@@ -86,9 +86,9 @@ export function Cameras() {
       </ul>
 
       <p className="mt-6 font-mono text-[11px] leading-relaxed text-muted">
-        Intrinsics: Load K · Measure K · scene-embedded K. FOV guess is a
-        non-calibrated placeholder only — not a real calibration. Do not assume
-        certified support on all GigE cameras.
+        Intrinsics: Load K · Measure K · scene-embedded K. The FOV guess is a
+        placeholder, not a calibration — and support beyond the sources listed
+        here (arbitrary GigE cameras included) is not certified.
       </p>
     </SectionShell>
   );

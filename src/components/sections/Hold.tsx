@@ -25,8 +25,10 @@ export function Hold() {
 
         <div className="view-reveal view-reveal-delay-1">
           <p className="text-base leading-relaxed text-muted">
-            {lock?.statement ??
-              "Live tracking locks a CAD outline onto the mould with tag detection."}
+            Point the camera at the mould and the overlay settles where the CAD
+            says it should. What you see here is what the operator sees on{" "}
+            <span className="font-mono text-ink">Track</span> — tags in, outline
+            on.
           </p>
           <ul className="mt-6 space-y-3 font-mono text-xs text-ink/90">
             <li className="flex gap-2 border-l-2 border-accent/50 pl-3">
@@ -36,12 +38,13 @@ export function Hold() {
               {errPx?.statement ?? "Error as reprojection in pixels."}
             </li>
             <li className="flex gap-2 border-l-2 border-[var(--border)] pl-3 text-muted">
-              Approx mm is optional depth conversion — not CMM uncertainty.
+              Approx mm is a depth conversion, clearly marked — not CMM
+              uncertainty.
             </li>
           </ul>
           <p className="mt-6 text-sm text-muted">
-            Caption describes a recorded demo, not a live accuracy certificate.
-            Clip loops automatically; use Play/Pause anytime.
+            A recorded demo, not an accuracy certificate. The clip loops on its
+            own — pause it whenever you like.
           </p>
         </div>
       </div>

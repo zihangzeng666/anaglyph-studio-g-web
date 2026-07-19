@@ -1,9 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import localFont from "next/font/local";
 import { BrandMark } from "@/components/BrandMark";
 import { isRuntimeDownloadPublic } from "../../content/downloads";
 import { site } from "../../content/site";
 import "./globals.css";
+
+/* Brand faces, self-hosted (latin subsets, ~132 KB total).
+   Archivo carries both roles: width 100% for text, expanded for display. */
+const archivo = localFont({
+  src: "../fonts/archivo-var.woff2",
+  weight: "100 900",
+  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+const plexMono = localFont({
+  src: [
+    { path: "../fonts/plex-mono-400.woff2", weight: "400" },
+    { path: "../fonts/plex-mono-500.woff2", weight: "500" },
+    { path: "../fonts/plex-mono-600.woff2", weight: "600" },
+  ],
+  variable: "--font-plex",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -57,7 +78,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${archivo.variable} ${plexMono.variable}`}>
       <body className="min-h-screen bg-bg text-ink antialiased">
         <a href="#main" className="skip-link">
           Skip to content
@@ -71,7 +92,7 @@ export default function RootLayout({
               <BrandMark />
             </Link>
             <nav aria-label="Primary">
-              <ul className="flex flex-wrap items-center justify-end gap-x-5 gap-y-2">
+              <ul className="flex flex-wrap items-center justify-end gap-x-4 gap-y-2 md:gap-x-5">
                 {NAV.map((item) => (
                   <li key={item.href}>
                     <Link

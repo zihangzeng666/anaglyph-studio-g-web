@@ -2,6 +2,7 @@ import Link from "next/link";
 import { site } from "../../../content/site";
 import { isRuntimeDownloadPublic } from "../../../content/downloads";
 import { BrandMark } from "@/components/BrandMark";
+import { TagMark } from "@/components/TagMark";
 import { SectionShell } from "./SectionShell";
 
 /**
@@ -34,10 +35,15 @@ export function Footer() {
           <h2 id="footer-heading" className="sr-only">
             Site footer
           </h2>
-          <BrandMark />
+          <div className="flex items-center gap-4">
+            <BrandMark />
+            <span aria-hidden className="text-accent/60">
+              <TagMark size={26} seed={5} />
+            </span>
+          </div>
           <p className="mt-4 max-w-sm text-sm text-muted">
-            {site.productName} — Windows desktop console for industrial mould
-            setup and live AR outline tracking.
+            {site.productName} — a Windows desktop console for industrial
+            mould setup and live AR outline tracking.
           </p>
         </div>
 
@@ -58,11 +64,11 @@ export function Footer() {
       </div>
 
       <p className="mt-12 border-t border-[var(--border)] pt-6 font-mono text-[11px] text-muted">
-        © {year} {site.productName}. All rights reserved. Product name is{" "}
-        {site.productName} / {site.shortName} only. Windows 10/11 x64
+        © {year} {site.productName} — {site.shortName} for short. All rights
+        reserved. Windows 10/11 x64
         {downloadPublic
           ? " · ready-to-run zip · SmartScreen may warn on unsigned builds."
-          : " · design-partner demos available on request."}
+          : " · design-partner demos on request."}
       </p>
     </SectionShell>
   );
