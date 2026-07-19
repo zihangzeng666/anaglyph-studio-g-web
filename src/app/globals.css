@@ -130,6 +130,18 @@ dl dt {
   background-repeat: no-repeat;
 }
 
+/* Hero track-mould loop — dark premium grade */
+.hero-video {
+  filter: grayscale(0.35) saturate(0.55) contrast(1.08) brightness(0.42);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    /* Still frame via poster; video may not autoplay under reduce */
+    opacity: 0.85;
+  }
+}
+
 /* Ghost chapter numerals behind pipeline copy */
 .ghost-num {
   color: transparent;

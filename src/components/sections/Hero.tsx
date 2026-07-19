@@ -7,9 +7,11 @@ import {
 } from "../../../content/downloads";
 import { HeroMotion } from "@/components/HeroMotion";
 import { assetPath } from "@/lib/assetPath";
+import { HOLD_MEDIA } from "@/lib/holdFlags";
 
 /**
- * Hero — clean product open: black field, small ambient still, plain headline.
+ * Hero — black cinematic open: muted track-mould loop under heavy filters,
+ * plain product headline. No marquee / ticker strip.
  */
 
 export function Hero() {
@@ -23,22 +25,27 @@ export function Hero() {
       aria-labelledby="hero-heading"
       className="relative overflow-hidden border-b border-[var(--border)] bg-bg"
     >
-      {/* Mostly black — small, quiet still on the right as atmosphere only */}
+      {/* Track mould loop — dark, cool, premium; never competes with type */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-bg" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={assetPath("/media/hero/track-hero.jpg")}
-          alt=""
-          width={781}
-          height={799}
-          decoding="async"
-          className="absolute right-[-4%] top-[12%] hidden h-[72%] w-auto max-w-[min(42vw,28rem)] object-cover object-center opacity-[0.14] saturate-50 blur-[0.3px] sm:block md:right-[4%] md:opacity-[0.16]"
-        />
-        {/* Keep type side pure black */}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--bg)_0%,var(--bg)_48%,color-mix(in_srgb,var(--bg)_88%,transparent)_72%,color-mix(in_srgb,var(--bg)_70%,transparent)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--bg)_0%,transparent_20%,transparent_75%,var(--bg)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_40%_50%_at_82%_55%,color-mix(in_srgb,var(--accent)_4%,transparent),transparent_70%)]" />
+        <video
+          className="hero-video absolute inset-0 h-full w-full object-cover object-[70%_45%]"
+          playsInline
+          muted
+          loop
+          autoPlay
+          preload="metadata"
+          poster={assetPath(HOLD_MEDIA.poster)}
+        >
+          <source src={assetPath(HOLD_MEDIA.mp4)} type="video/mp4" />
+        </video>
+        {/* Cinematic grade: crush blacks, mute color, slight cool lift */}
+        <div className="absolute inset-0 bg-bg/55 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,var(--bg)_0%,color-mix(in_srgb,var(--bg)_92%,transparent)_36%,color-mix(in_srgb,var(--bg)_55%,transparent)_62%,color-mix(in_srgb,var(--bg)_78%,transparent)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--bg)_0%,transparent_18%,transparent_72%,var(--bg)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_50%_55%_at_72%_50%,color-mix(in_srgb,var(--accent)_5%,transparent),transparent_68%)]" />
+        {/* Soft vignette */}
+        <div className="absolute inset-0 shadow-[inset_0_0_120px_40px_var(--bg)]" />
       </div>
 
       <HeroMotion>
@@ -83,7 +90,7 @@ export function Hero() {
             )}
             <a
               href="#paths"
-              className="inline-flex items-center justify-center rounded-sm border border-[var(--border)] bg-panel/60 px-5 py-3 font-sans text-sm font-medium text-ink transition-colors hover:border-accent/40 hover:text-accent-hi focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="inline-flex items-center justify-center rounded-sm border border-[var(--border)] bg-panel/50 px-5 py-3 font-sans text-sm font-medium text-ink backdrop-blur-[2px] transition-colors hover:border-accent/40 hover:text-accent-hi focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               How it works
             </a>
